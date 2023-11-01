@@ -19,7 +19,11 @@ class State(rx.State):
 
     async def answer(self):
         # Our chatbot is not very smart right now...
-        answer = "I don't know!"
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get("http://localhost:8000/ping")
+
+        answer = "I don't know! " + response.text
         self.chat_history.append((self.question, ""))
 
         # Clear the question input.
@@ -56,7 +60,6 @@ class State(rx.State):
     @rx.background
     async def get_posts_host(self):
         async with httpx.AsyncClient() as client:
-            # for pid in range(10):
             response = await client.get("http://localhost:8000/ping")
             async with self:
                 # self.posts.append(response.text)

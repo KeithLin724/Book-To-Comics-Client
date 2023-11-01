@@ -3,5 +3,5 @@
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "python.formatting.provider": "none",
-  "cSpell.words": ["hstack"]
+  "cSpell.words": ["fastapi", "hstack"]
 }

@@ -3,7 +3,6 @@ from Book_To_Comics_Client.templates import template
 
 import reflex as rx
 from ..state import State
-from functools import partial
 
 
 @template(route="/test_page", title="Test_page")
@@ -18,6 +17,7 @@ def test_page() -> rx.Component:
             "Test",
             font_size="3em",
         ),
+        # rx.text("!" * 140),
         rx.text("Welcome to Reflex!"),
         rx.button(
             "test request",

@@ -47,7 +47,7 @@ def action_bar() -> rx.Component:
     )
 
 
-@template(route="/chat", title="chat")
+@template(route="/chat", title="Chat")
 def chat_ai_room() -> rx.Component:
     """The dashboard page.
 

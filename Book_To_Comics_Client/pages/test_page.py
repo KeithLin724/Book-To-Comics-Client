@@ -21,7 +21,7 @@ def test_page() -> rx.Component:
         rx.text("Welcome to Reflex!"),
         rx.button(
             "test request",
-            on_click=State.get_posts_host,
+            on_click=State.test_get_request,
         ),
-        rx.text(f"get result {State.posts} , {State.res}"),
+        rx.text(f"get result {State.res} , {State.res}"),
     )

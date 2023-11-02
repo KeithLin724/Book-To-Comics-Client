@@ -1,1 +1,1 @@
-# from .chat_ai_room import *
+from . import chat_ai_room

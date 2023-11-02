@@ -23,7 +23,7 @@ class State(rx.State):
         async with httpx.AsyncClient() as client:
             response = await client.get("http://localhost:8000/ping")
 
-        answer = "I don't know! " + response.text
+        answer = "I don't know! " + response.text + "`hello world`"
         self.chat_history.append((self.question, ""))
 
         # Clear the question input.
@@ -33,7 +33,7 @@ class State(rx.State):
 
         for i in range(len(answer)):
             # Pause to show the streaming effect.
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.05)
             # Add one letter at a time to the output.
             self.chat_history[-1] = (
                 self.chat_history[-1][0],
@@ -74,8 +74,10 @@ class State(rx.State):
 
     # @rx.background
     async def test_get_request(self):
-        result = self.get_request("http://localhost:8000/ping/")
-        async with self:
-            self.res = result.text
+        async with httpx.AsyncClient() as client:
+            response = await client.get("http://localhost:8000/ping")
+        self.res = response.text
+        # async with self:
+        #     self.res = result.text
 
     pass

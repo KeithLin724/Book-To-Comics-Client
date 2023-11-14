@@ -68,7 +68,7 @@ def action_bar() -> rx.Component:
         ),
         rx.button(
             "Ask",
-            on_click=State.answer,
+            on_click=State.answer_ai,
             style=button_style,
         ),
     )

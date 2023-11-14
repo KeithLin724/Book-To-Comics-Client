@@ -16,16 +16,12 @@ def single_img_button(index: int) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.image(src=State.img_src, width="100%", height="100%"),
-            rx.text("Picture"),
-            rx.button(
-                rx.text("Change Image"),
-            ),
-            on_click=State.image_refresh,
+            rx.text(f"Picture {index+1}"),
+            rx.text(f"Change Image times: {State.counter}"),
+            rx.button("Change Image", on_click=State.image_refresh),
         ),
-        padding=20,
+        padding="4em",
     )
-
-
 
 
 @template(route="/book_to_comic", title="Book_to_Comic")
@@ -43,5 +39,4 @@ def book_to_comic() -> rx.Component:
             width="100%",
         ),
         padding_top="20px",
-        
     )

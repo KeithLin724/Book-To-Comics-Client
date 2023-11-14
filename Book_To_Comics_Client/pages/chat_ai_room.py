@@ -17,7 +17,7 @@ def chat_ai_room() -> rx.Component:
     Returns:
         The UI for the dashboard page.
     """
-    return rx.container(
+    return rx.vstack(
         rx.heading(
             "Chat to AI",
             font_size="3em",

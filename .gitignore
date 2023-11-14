@@ -1,9 +1,5 @@
 *.db
-
 *.py[cod]
-
 .web
-
 __pycache__/
-
 book_to_comics_client_venv

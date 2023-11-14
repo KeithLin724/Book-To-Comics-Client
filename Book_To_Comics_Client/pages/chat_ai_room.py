@@ -23,7 +23,7 @@ def chat_ai_room() -> rx.Component:
             font_size="3em",
         ),
         rx.markdown(
-            "---\nhere you can talk with our ai and generate image use `generate image` to generate image",
+            "---\nhere you can talk with our ai and generate image use `generate image` to generate image, also here can write some code for you",
             component_map=markdown_style,
         ),
         chat_ai.chat(),

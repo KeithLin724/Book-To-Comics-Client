@@ -7,8 +7,15 @@ import reflex as rx
 
 def textbox():
     return rx.vstack(
-        rx.text_area(on_change=State.set_text, value=State.text, width="100%"),
-        rx.button("Send", on_click=State.send),
+        rx.text_area(
+            on_change=State.set_text,
+            value=State.text,
+            width="100%",
+        ),
+        rx.button(
+            "Send",
+            on_click=State.send,
+        ),
     )
 
 

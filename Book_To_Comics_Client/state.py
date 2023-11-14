@@ -81,13 +81,17 @@ class State(rx.State):
         #     self.res = result.text
 
     text: str
-    text_list: list[int] = [1, 2, 3, 4, 5]
+    text_list: list[int] = []
     img_src: str
-    
+    counter: int = 0
+
     def send(self):
+        self.text_list = [i for i in range(int(self.text))]
         self.text = ""
-        
+        self.counter = 0
+
     def image_refresh(self):
         self.img_src = ""
-    
+        self.counter += 1
+
     pass

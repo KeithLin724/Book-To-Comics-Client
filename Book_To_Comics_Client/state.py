@@ -17,13 +17,23 @@ class State(rx.State):
     question: str
     chat_history: list[tuple[str, str]]
 
-    async def answer(self):
+    async def answer_ai(self):
         # Our chatbot is not very smart right now...
-
+        format_request = {
+            "type_service": "chat",
+            "name": "tmp",
+            "prompt": self.question,
+        }
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:8000/ping")
+            # response = await client.get("http://localhost:8000/ping")
+            response = await client.post(
+                "http://140.113.238.35:5000/generate_service",
+                json=format_request,
+            )
 
-        answer = "I don't know! " + response.text + "`hello world`"
+        res = response.json()
+
+        answer = res.get("message")
         self.chat_history.append((self.question, ""))
 
         # Clear the question input.
@@ -40,6 +50,30 @@ class State(rx.State):
                 answer[: i + 1],
             )
             yield
+
+    # async def answer(self):
+    #     # Our chatbot is not very smart right now...
+
+    #     async with httpx.AsyncClient() as client:
+    #         response = await client.get("http://localhost:8000/ping")
+
+    #     answer = "I don't know! " + response.text + "`hello world`"
+    #     self.chat_history.append((self.question, ""))
+
+    #     # Clear the question input.
+    #     self.question = ""
+    #     # Yield here to clear the frontend input before continuing.
+    #     yield
+
+    #     for i in range(len(answer)):
+    #         # Pause to show the streaming effect.
+    #         await asyncio.sleep(0.05)
+    #         # Add one letter at a time to the output.
+    #         self.chat_history[-1] = (
+    #             self.chat_history[-1][0],
+    #             answer[: i + 1],
+    #         )
+    #         yield
 
     """
     chat room end
@@ -83,6 +117,7 @@ class State(rx.State):
     text: str
     text_list: list[int] = []
     img_src: str
+
     counter: int = 0
 
     def send(self):
@@ -93,5 +128,6 @@ class State(rx.State):
     def image_refresh(self):
         self.img_src = ""
         self.counter += 1
+
 
     pass

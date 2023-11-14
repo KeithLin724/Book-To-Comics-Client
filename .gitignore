@@ -2,4 +2,6 @@
 *.py[cod]
 .web
 __pycache__/
+book_to_comic_client_venv
 book_to_comics_client_venv
+

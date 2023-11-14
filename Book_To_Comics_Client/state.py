@@ -44,4 +44,14 @@ class State(rx.State):
         async with self:
             self.res = result.text
 
+    text: str
+    text_list: list[int] = [1, 2, 3, 4, 5]
+    img_src: str
+    
+    def send(self):
+        self.text = ""
+        
+    def image_refresh(self):
+        self.img_src = ""
+    
     pass

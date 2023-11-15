@@ -6,6 +6,8 @@ import asyncio
 from .func import helper
 from PIL import Image
 from io import BytesIO
+import asyncio
+import time
 
 
 class State(rx.State):
@@ -127,6 +129,8 @@ class State(rx.State):
 
     is_zoomed: bool = False
 
+    show_copy_in_top: bool = False
+
     def toggle_zoom(self):
         self.is_zoomed = not self.is_zoomed
 
@@ -138,9 +142,22 @@ class State(rx.State):
 
     img_src_arr: list[tuple[int, Image.Image]]
 
-    def copy_show(self, image_url):
+    def copy_show(self, image_url: str):
+        """
+        for display the copy message
+
+        The `copy_show` function toggles the `show_copy_in_top` attribute, sets the clipboard to the
+        provided `image_url`, waits for 1 second, and then toggles the `show_copy_in_top` attribute again.
+
+        :param image_url: The `image_url` parameter is a string that represents the URL of an image that you
+        want to copy to the clipboard
+        :type image_url: str
+        """
+
+        self.show_copy_in_top = not self.show_copy_in_top
         yield rx.set_clipboard(image_url)
-        yield rx.window_alert("Copied to clipboard!")
+        time.sleep(1)
+        self.show_copy_in_top = not self.show_copy_in_top
 
     # send to server
     @rx.background
@@ -165,11 +182,6 @@ class State(rx.State):
             for i, (res, res_url) in enumerate(response_arr):
                 self.img_src_arr[i] = (i, res, res_url)
         return
-
-    # def send_new(self):
-    #     self.text_list = [i for i in range(int(self.text))]
-    #     self.text = ""
-    #     yield rx.console_log("here")
 
     def image_refresh(self):
         yield rx.window_alert("You clicked the image!")

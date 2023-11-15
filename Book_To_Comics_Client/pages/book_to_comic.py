@@ -56,26 +56,25 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
             rx.button("Change Image", on_click=State.image_refresh),
             rx.button(
                 "Copy Image",
-                # on_click=rx.window_alert(str(type(image))),
                 on_click=partial(State.copy_show, image_url),
             ),
-            # rx.drawer(
-            #     rx.drawer_overlay(
-            #         rx.drawer_content(
-            #             rx.image(
-            #                 src=image,
-            #                 # height="100%",
-            #                 width="20%",
-            #             ),
-            #             # rx.button("Close", on_click=State.toggle_zoom),
-            #             rx.drawer_footer(
-            #                 rx.button("Close", on_click=State.toggle_zoom)
-            #             ),
-            #         ),
-            #         bg="rgba(0, 0, 0, 0.3)",
-            #     ),
-            #     is_open=State.is_zoomed,
-            # ),
+            # drawer component
+            rx.drawer(
+                rx.drawer_content(
+                    # rx.text("Copied!"),
+                    # rx.drawer_header("Copied!"),
+                    rx.center(
+                        rx.drawer_header(
+                            "Copied!",
+                            color="white",
+                        ),
+                    ),
+                    bg="rgba(0, 0, 0, 0.3)",
+                ),
+                is_open=State.show_copy_in_top,
+                # placement prop to position drawer at top
+                placement="top",
+            ),
             rx.alert_dialog(
                 rx.alert_dialog_overlay(
                     rx.alert_dialog_content(
@@ -86,6 +85,7 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
                     ),
                 ),
                 is_open=State.is_zoomed,
+                on_overlay_click=State.toggle_zoom,
             ),
         ),
         padding="4em",

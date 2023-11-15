@@ -19,25 +19,14 @@ def textbox():
     )
 
 
-def single_img_button(index: int) -> rx.Component:
-    return rx.box(
-        rx.vstack(
-            rx.image(src=State.img_src, width="100%", height="100%"),
-            rx.text(f"Picture {index+1}"),
-            rx.text(f"Change Image times: {State.counter}"),
-            rx.button("Change Image", on_click=State.image_refresh),
-        ),
-        padding="4em",
-    )
-
-
-def single_img_button_markdown(index: int, path) -> rx.Component:
+def single_img_button(index: int, image) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.image(
-                src=path,
-                width="25%",
-                height="25%",
+                src=image,
+                width="200px",
+                html_height="auto",
+                fit="scale-down",  # Keep aspect ratio
             ),  # , width="100%", height="100%"
             # rx.markdown(path),
             rx.text(f"Picture {index+1}"),
@@ -46,6 +35,24 @@ def single_img_button_markdown(index: int, path) -> rx.Component:
         ),
         padding="4em",
     )
+
+
+# def single_img_button_markdown(index: int, path) -> rx.Component:
+#     return rx.box(
+#         rx.vstack(
+#             rx.image(
+#                 src=path,
+#                 width="200px",
+#                 html_height="auto",
+#                 fit="scale-down",  # Keep aspect ratio
+#             ),  # , width="100%", height="100%"
+#             # rx.markdown(path),
+#             rx.text(f"Picture {index+1}"),
+#             rx.text(f"Change Image times: {State.counter}"),
+#             rx.button("Change Image", on_click=State.image_refresh),
+#         ),
+#         padding="4em",
+#     )
 
 
 @template(route="/book_to_comic", title="Book_to_Comic")
@@ -60,7 +67,7 @@ def book_to_comic() -> rx.Component:
         rx.flex(
             rx.foreach(
                 State.img_src_arr,
-                lambda item: single_img_button_markdown(item[0], item[1]),
+                lambda item: single_img_button(item[0], item[1]),
             ),
             flex_wrap="wrap",
             width="100%",

@@ -28,31 +28,12 @@ def single_img_button(index: int, image) -> rx.Component:
                 html_height="auto",
                 fit="scale-down",  # Keep aspect ratio
             ),  # , width="100%", height="100%"
-            # rx.markdown(path),
             rx.text(f"Picture {index+1}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button("Change Image", on_click=State.image_refresh),
         ),
         padding="4em",
     )
-
-
-# def single_img_button_markdown(index: int, path) -> rx.Component:
-#     return rx.box(
-#         rx.vstack(
-#             rx.image(
-#                 src=path,
-#                 width="200px",
-#                 html_height="auto",
-#                 fit="scale-down",  # Keep aspect ratio
-#             ),  # , width="100%", height="100%"
-#             # rx.markdown(path),
-#             rx.text(f"Picture {index+1}"),
-#             rx.text(f"Change Image times: {State.counter}"),
-#             rx.button("Change Image", on_click=State.image_refresh),
-#         ),
-#         padding="4em",
-#     )
 
 
 @template(route="/book_to_comic", title="Book_to_Comic")

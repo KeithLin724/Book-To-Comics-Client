@@ -125,6 +125,11 @@ class State(rx.State):
 
     counter: int = 0
 
+    is_zoomed: bool = False
+
+    def toggle_zoom(self):
+        self.is_zoomed = not self.is_zoomed
+
     def send(self):
         self.text_list = [i for i in range(int(self.text))]
         self.text = ""

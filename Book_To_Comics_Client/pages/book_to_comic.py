@@ -45,7 +45,7 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
                         html_height="auto",
                         # Keep aspect ratio
                         fit="scale-down",
-                        on_click=State.image_refresh,
+                        on_click=State.toggle_zoom,
                     ),
                     label="cat is running",
                     has_arrow=True,
@@ -59,11 +59,34 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
                 # on_click=rx.window_alert(str(type(image))),
                 on_click=partial(State.copy_show, image_url),
             ),
-            # rx.link(
-            #     "Download",
-            #     href=image_url,
-            #     is_external=True,
+            # rx.drawer(
+            #     rx.drawer_overlay(
+            #         rx.drawer_content(
+            #             rx.image(
+            #                 src=image,
+            #                 # height="100%",
+            #                 width="20%",
+            #             ),
+            #             # rx.button("Close", on_click=State.toggle_zoom),
+            #             rx.drawer_footer(
+            #                 rx.button("Close", on_click=State.toggle_zoom)
+            #             ),
+            #         ),
+            #         bg="rgba(0, 0, 0, 0.3)",
+            #     ),
+            #     is_open=State.is_zoomed,
             # ),
+            rx.alert_dialog(
+                rx.alert_dialog_overlay(
+                    rx.alert_dialog_content(
+                        rx.image(
+                            src=image,
+                            on_click=State.toggle_zoom,
+                        ),
+                    ),
+                ),
+                is_open=State.is_zoomed,
+            ),
         ),
         padding="4em",
     )

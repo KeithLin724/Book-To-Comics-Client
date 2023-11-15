@@ -124,10 +124,10 @@ class State(rx.State):
         self.text_list = [i for i in range(int(self.text))]
         self.text = ""
         self.counter = 0
+        yield rx.console_log("here")
 
     def image_refresh(self):
         self.img_src = ""
         self.counter += 1
-
 
     pass

@@ -15,6 +15,15 @@ def textbox():
         rx.button(
             "Send",
             on_click=State.get_test_image,
+            border_radius="1em",
+            box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
+            background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
+            box_sizing="border-box",
+            color="white",
+            opacity="0.6",
+            _hover={
+                "opacity": 1,
+            },
         ),
     )
 
@@ -22,12 +31,18 @@ def textbox():
 def single_img_button(index: int, image) -> rx.Component:
     return rx.box(
         rx.vstack(
-            rx.image(
-                src=image,
-                width="200px",
-                html_height="auto",
-                fit="scale-down",  # Keep aspect ratio
-            ),  # , width="100%", height="100%"
+            rx.cond(
+                image == "",
+                rx.circular_progress(
+                    is_indeterminate=True
+                ),  # CircularProgress when the image is loading
+                rx.image(  # Display image when loading is complete
+                    src=image,
+                    width="200px",
+                    html_height="auto",
+                    fit="scale-down",  # Keep aspect ratio
+                ),
+            ),
             rx.text(f"Picture {index+1}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button("Change Image", on_click=State.image_refresh),

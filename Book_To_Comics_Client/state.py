@@ -3,6 +3,9 @@
 import reflex as rx
 import httpx
 import asyncio
+from .func import helper
+from PIL import Image
+from io import BytesIO
 
 
 class State(rx.State):
@@ -114,6 +117,8 @@ class State(rx.State):
         # async with self:
         #     self.res = result.text
 
+    ############################
+
     text: str
     text_list: list[int] = []
     img_src: str
@@ -126,8 +131,35 @@ class State(rx.State):
         self.counter = 0
         yield rx.console_log("here")
 
+    img_src_arr: list[tuple[int, Image.Image]]
+
+    # send to server
+    @rx.background
+    async def get_test_image(self):
+        async with self:
+            self.img_src_arr = [(i, "") for i in range(int(self.text))]
+            self.text = ""
+
+        response_arr = []
+        async with httpx.AsyncClient() as client:
+            for _ in self.img_src_arr:
+                response = await client.get("http://140.113.238.35:5000/test_get_image")
+
+                response_arr.append(Image.open(BytesIO(response.content)))
+
+        async with self:
+            for i, res in enumerate(response_arr):
+                self.img_src_arr[i] = (i, res)
+        return
+
+    # def send_new(self):
+    #     self.text_list = [i for i in range(int(self.text))]
+    #     self.text = ""
+    #     yield rx.console_log("here")
+
     def image_refresh(self):
         self.img_src = ""
         self.counter += 1
+        yield rx.console_log(str(self.img_src_arr))
 
     pass

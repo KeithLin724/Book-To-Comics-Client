@@ -14,7 +14,7 @@ def textbox():
         ),
         rx.button(
             "Send",
-            on_click=State.send,
+            on_click=State.get_test_image,
         ),
     )
 
@@ -23,6 +23,23 @@ def single_img_button(index: int) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.image(src=State.img_src, width="100%", height="100%"),
+            rx.text(f"Picture {index+1}"),
+            rx.text(f"Change Image times: {State.counter}"),
+            rx.button("Change Image", on_click=State.image_refresh),
+        ),
+        padding="4em",
+    )
+
+
+def single_img_button_markdown(index: int, path) -> rx.Component:
+    return rx.box(
+        rx.vstack(
+            rx.image(
+                src=path,
+                width="25%",
+                height="25%",
+            ),  # , width="100%", height="100%"
+            # rx.markdown(path),
             rx.text(f"Picture {index+1}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button("Change Image", on_click=State.image_refresh),
@@ -41,7 +58,10 @@ def book_to_comic() -> rx.Component:
         ),
         textbox(),
         rx.flex(
-            rx.foreach(State.text_list, single_img_button),
+            rx.foreach(
+                State.img_src_arr,
+                lambda item: single_img_button_markdown(item[0], item[1]),
+            ),
             flex_wrap="wrap",
             width="100%",
         ),

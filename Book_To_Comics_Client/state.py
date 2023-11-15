@@ -145,11 +145,16 @@ class State(rx.State):
             for _ in self.img_src_arr:
                 response = await client.get("http://140.113.238.35:5000/test_get_image")
 
-                response_arr.append(Image.open(BytesIO(response.content)))
+                response_arr.append(
+                    (
+                        Image.open(BytesIO(response.content)),
+                        helper.image_to_url(response.content),
+                    )
+                )
 
         async with self:
-            for i, res in enumerate(response_arr):
-                self.img_src_arr[i] = (i, res)
+            for i, (res, res_url) in enumerate(response_arr):
+                self.img_src_arr[i] = (i, res, res_url)
         return
 
     # def send_new(self):

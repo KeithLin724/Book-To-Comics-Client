@@ -4,6 +4,8 @@ from Book_To_Comics_Client.state import State
 
 import reflex as rx
 
+from ..func import helper
+
 
 def textbox():
     return rx.vstack(
@@ -28,7 +30,7 @@ def textbox():
     )
 
 
-def single_img_button(index: int, image) -> rx.Component:
+def single_img_button(index: int, image, image_url) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.cond(
@@ -52,6 +54,19 @@ def single_img_button(index: int, image) -> rx.Component:
             rx.text(f"Picture {index+1}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button("Change Image", on_click=State.image_refresh),
+            # rx.button(
+            #     "Download Image",
+            #     # on_click=rx.window_alert(str(type(image))),
+            #     on_click=rx.download(
+            #         url=str(image_url),
+            #         filename="cat is running",
+            #     ),
+            # ),
+            # rx.link(
+            #     "Download",
+            #     href=image_url,
+            #     is_external=True,
+            # ),
         ),
         padding="4em",
     )
@@ -69,7 +84,11 @@ def book_to_comic() -> rx.Component:
         rx.flex(
             rx.foreach(
                 State.img_src_arr,
-                lambda item: single_img_button(item[0], item[1]),
+                lambda item: single_img_button(
+                    item[0],
+                    item[1],
+                    item[2],
+                ),
             ),
             flex_wrap="wrap",
             width="100%",

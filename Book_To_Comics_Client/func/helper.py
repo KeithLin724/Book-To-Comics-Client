@@ -1,4 +1,6 @@
 import base64
+import io
+from PIL.Image import Image
 
 
 def image_to_url(image_content: bytes) -> str:
@@ -17,3 +19,7 @@ def image_to_url(image_content: bytes) -> str:
 
 def image_to_markdown(image_url: str) -> str:
     return f"![Image]({image_url})"
+
+
+# def pil_image_to_url(image: Image):
+#     return image_to_url(image_content=image.tobytes())

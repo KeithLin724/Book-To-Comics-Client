@@ -32,11 +32,11 @@ def single_img_button(index: int, image) -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.cond(
-                image == "",
+                condition=(image == ""),
                 # CircularProgress when the image is loading
-                rx.circular_progress(is_indeterminate=True),
+                c1=rx.circular_progress(is_indeterminate=True),
                 # Display image when loading is complete
-                rx.image(
+                c2=rx.image(
                     src=image,
                     width="200px",
                     html_height="auto",

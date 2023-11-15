@@ -33,14 +33,15 @@ def single_img_button(index: int, image) -> rx.Component:
         rx.vstack(
             rx.cond(
                 image == "",
-                rx.circular_progress(
-                    is_indeterminate=True
-                ),  # CircularProgress when the image is loading
-                rx.image(  # Display image when loading is complete
+                # CircularProgress when the image is loading
+                rx.circular_progress(is_indeterminate=True),
+                # Display image when loading is complete
+                rx.image(
                     src=image,
                     width="200px",
                     html_height="auto",
-                    fit="scale-down",  # Keep aspect ratio
+                    # Keep aspect ratio
+                    fit="scale-down",
                 ),
             ),
             rx.text(f"Picture {index+1}"),

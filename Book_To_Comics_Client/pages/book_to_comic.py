@@ -4,7 +4,7 @@ from Book_To_Comics_Client.state import State
 
 import reflex as rx
 
-from ..func import helper
+from functools import partial
 
 
 def textbox():
@@ -54,14 +54,11 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
             rx.text(f"Picture {index+1}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button("Change Image", on_click=State.image_refresh),
-            # rx.button(
-            #     "Download Image",
-            #     # on_click=rx.window_alert(str(type(image))),
-            #     on_click=rx.download(
-            #         url=str(image_url),
-            #         filename="cat is running",
-            #     ),
-            # ),
+            rx.button(
+                "Copy Image",
+                # on_click=rx.window_alert(str(type(image))),
+                on_click=partial(State.copy_show, image_url),
+            ),
             # rx.link(
             #     "Download",
             #     href=image_url,

@@ -133,6 +133,10 @@ class State(rx.State):
 
     img_src_arr: list[tuple[int, Image.Image]]
 
+    def copy_show(self, image_url):
+        yield rx.set_clipboard(image_url)
+        yield rx.window_alert("Copied to clipboard!")
+
     # send to server
     @rx.background
     async def get_test_image(self):

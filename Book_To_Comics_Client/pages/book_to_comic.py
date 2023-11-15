@@ -36,12 +36,17 @@ def single_img_button(index: int, image) -> rx.Component:
                 # CircularProgress when the image is loading
                 c1=rx.circular_progress(is_indeterminate=True),
                 # Display image when loading is complete
-                c2=rx.image(
-                    src=image,
-                    width="200px",
-                    html_height="auto",
-                    # Keep aspect ratio
-                    fit="scale-down",
+                c2=rx.tooltip(
+                    rx.image(
+                        src=image,
+                        width="200px",
+                        html_height="auto",
+                        # Keep aspect ratio
+                        fit="scale-down",
+                        on_click=State.image_refresh,
+                    ),
+                    label="cat is running",
+                    has_arrow=True,
                 ),
             ),
             rx.text(f"Picture {index+1}"),

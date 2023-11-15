@@ -158,8 +158,7 @@ class State(rx.State):
     #     yield rx.console_log("here")
 
     def image_refresh(self):
-        self.img_src = ""
+        yield rx.window_alert("You clicked the image!")
         self.counter += 1
-        yield rx.console_log(str(self.img_src_arr))
 
     pass

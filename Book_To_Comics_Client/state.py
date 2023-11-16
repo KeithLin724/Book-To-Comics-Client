@@ -6,7 +6,6 @@ import asyncio
 from .func import helper
 from PIL import Image
 from io import BytesIO
-import asyncio
 import time
 
 
@@ -142,7 +141,7 @@ class State(rx.State):
 
     img_src_arr: list[tuple[int, Image.Image]]
 
-    def copy_show(self, image_url: str):
+    async def copy_show(self, image_url: str):
         """
         for display the copy message
 
@@ -156,7 +155,8 @@ class State(rx.State):
 
         self.show_copy_in_top = not self.show_copy_in_top
         yield rx.set_clipboard(image_url)
-        time.sleep(1)
+        # time.sleep(1)
+        await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top
 
     # send to server

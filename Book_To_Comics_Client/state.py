@@ -3,7 +3,7 @@
 import reflex as rx
 import httpx
 import asyncio
-from .func import helper
+from Book_To_Comics_Client.func import helper
 from PIL import Image
 from PIL.Image import Image as pil_Image
 from io import BytesIO
@@ -65,30 +65,6 @@ class State(rx.State):
                 answer[: i + 1],
             )
             yield
-
-    # async def answer(self):
-    #     # Our chatbot is not very smart right now...
-
-    #     async with httpx.AsyncClient() as client:
-    #         response = await client.get("http://localhost:8000/ping")
-
-    #     answer = "I don't know! " + response.text + "`hello world`"
-    #     self.chat_history.append((self.question, ""))
-
-    #     # Clear the question input.
-    #     self.question = ""
-    #     # Yield here to clear the frontend input before continuing.
-    #     yield
-
-    #     for i in range(len(answer)):
-    #         # Pause to show the streaming effect.
-    #         await asyncio.sleep(0.05)
-    #         # Add one letter at a time to the output.
-    #         self.chat_history[-1] = (
-    #             self.chat_history[-1][0],
-    #             answer[: i + 1],
-    #         )
-    #         yield
 
     """
     chat room end

@@ -74,7 +74,7 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
                 on_click=partial(State.copy_show, image_url),
                 is_disabled=image == "",
             ),
-            # drawer component
+            # drawer component : display a message in the top , "Copied!"
             rx.drawer(
                 rx.drawer_content(
                     # rx.text("Copied!"),
@@ -91,6 +91,7 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
                 # placement prop to position drawer at top
                 placement="top",
             ),
+            # zoom image component
             rx.alert_dialog(
                 rx.alert_dialog_overlay(
                     rx.alert_dialog_content(

@@ -9,20 +9,6 @@ from Book_To_Comics_Client.styles import (
 )
 
 
-# def qa(question: str, answer: str) -> rx.Component:
-#     return rx.box(
-#         rx.box(
-#             rx.text(question, style=question_style),
-#             text_align="right",
-#         ),
-#         rx.box(
-#             rx.text(answer, style=answer_style),
-#             text_align="left",
-#         ),
-#         margin_y="1em",
-#     )
-
-
 def qa_markdown(question: str, answer: str) -> rx.Component:
     return rx.box(
         rx.box(

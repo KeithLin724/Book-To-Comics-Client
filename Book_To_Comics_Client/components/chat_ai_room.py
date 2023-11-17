@@ -9,18 +9,18 @@ from Book_To_Comics_Client.styles import (
 )
 
 
-def qa(question: str, answer: str) -> rx.Component:
-    return rx.box(
-        rx.box(
-            rx.text(question, style=question_style),
-            text_align="right",
-        ),
-        rx.box(
-            rx.text(answer, style=answer_style),
-            text_align="left",
-        ),
-        margin_y="1em",
-    )
+# def qa(question: str, answer: str) -> rx.Component:
+#     return rx.box(
+#         rx.box(
+#             rx.text(question, style=question_style),
+#             text_align="right",
+#         ),
+#         rx.box(
+#             rx.text(answer, style=answer_style),
+#             text_align="left",
+#         ),
+#         margin_y="1em",
+#     )
 
 
 def qa_markdown(question: str, answer: str) -> rx.Component:
@@ -35,15 +35,20 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
             ),
             text_align="right",
         ),
-        rx.box(
+        rx.tooltip(
             rx.box(
-                rx.markdown(
-                    answer,
-                    component_map=markdown_style,
+                rx.box(
+                    rx.markdown(
+                        answer,
+                        component_map=markdown_style,
+                    ),
+                    style=answer_style,
                 ),
-                style=answer_style,
+                text_align="left",
+                on_click=lambda: State.copy_show(answer),
             ),
-            text_align="left",
+            label="copy",
+            has_arrow=True,
         ),
         margin_y="1em",
     )
@@ -76,4 +81,25 @@ def action_bar() -> rx.Component:
             loading_text="thinking...",
             spinner_placement="start",
         ),
+    )
+
+
+def copy_message_board() -> rx.Component:
+    # zoom image component
+
+    return rx.drawer(
+        rx.drawer_content(
+            # rx.text("Copied!"),
+            # rx.drawer_header("Copied!"),
+            rx.center(
+                rx.drawer_header(
+                    "Copied!",
+                    color="white",
+                ),
+            ),
+            bg="rgba(0, 0, 0, 0.3)",
+        ),
+        is_open=State.show_copy_in_top,
+        # placement prop to position drawer at top
+        placement="top",
     )

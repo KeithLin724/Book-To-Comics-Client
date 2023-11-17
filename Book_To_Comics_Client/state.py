@@ -148,20 +148,17 @@ class State(rx.State):
 
     show_copy_in_top: bool = False
 
-    async def copy_show(self, image_url: str):
+    async def copy_show(self, copy_message: str):
         """
-        for display the copy message
+        The `copy_show` function toggles the `show_copy_in_top` attribute, sets the clipboard to
+        `copy_message`, waits for 1 second, and then toggles the `show_copy_in_top` attribute again.
 
-        The `copy_show` function toggles the `show_copy_in_top` attribute, sets the clipboard to the
-        provided `image_url`, waits for 1 second, and then toggles the `show_copy_in_top` attribute again.
-
-        :param image_url: The `image_url` parameter is a string that represents the URL of an image that you
-        want to copy to the clipboard
-        :type image_url: str
+        :param copy_message: The `copy_message` parameter is a string that represents the message you want
+        to copy to the clipboard
+        :type copy_message: str
         """
-
         self.show_copy_in_top = not self.show_copy_in_top
-        yield rx.set_clipboard(image_url)
+        yield rx.set_clipboard(copy_message)
         # time.sleep(1)
         await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top

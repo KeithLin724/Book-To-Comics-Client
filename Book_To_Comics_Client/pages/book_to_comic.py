@@ -18,5 +18,7 @@ def book_to_comic() -> rx.Component:
         ),
         btc.textbox(),
         btc.display_image_board(),
+        btc.zoom_message_board(),
+        btc.copy_message_board(),
         padding_top="20px",
     )

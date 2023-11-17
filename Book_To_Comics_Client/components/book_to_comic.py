@@ -56,7 +56,8 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
                         html_height="auto",
                         # Keep aspect ratio
                         fit="scale-down",
-                        on_click=State.toggle_zoom,
+                        # zoom image
+                        on_click=lambda: State.toggle_zoom(image),
                     ),
                     label="cat is running",
                     has_arrow=True,
@@ -73,36 +74,6 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
                 "Copy Image",
                 on_click=partial(State.copy_show, image_url),
                 is_disabled=image == "",
-            ),
-            # drawer component : display a message in the top , "Copied!"
-            rx.drawer(
-                rx.drawer_content(
-                    # rx.text("Copied!"),
-                    # rx.drawer_header("Copied!"),
-                    rx.center(
-                        rx.drawer_header(
-                            "Copied!",
-                            color="white",
-                        ),
-                    ),
-                    bg="rgba(0, 0, 0, 0.3)",
-                ),
-                is_open=State.show_copy_in_top,
-                # placement prop to position drawer at top
-                placement="top",
-            ),
-            # zoom image component
-            rx.alert_dialog(
-                rx.alert_dialog_overlay(
-                    rx.alert_dialog_content(
-                        rx.image(
-                            src=image,
-                            on_click=State.toggle_zoom,
-                        ),
-                    ),
-                ),
-                is_open=State.is_zoomed,
-                on_overlay_click=State.toggle_zoom,
             ),
         ),
         padding="4em",
@@ -129,4 +100,41 @@ def display_image_board() -> rx.Component:
         ),
         flex_wrap="wrap",
         width="100%",
+    )
+
+
+def zoom_message_board() -> rx.Component:
+    # drawer component : display a message in the top , "Copied!"
+    return rx.alert_dialog(
+        rx.alert_dialog_overlay(
+            rx.alert_dialog_content(
+                rx.image(
+                    src=State.zoom_image,
+                    on_click=lambda: State.toggle_zoom(""),
+                ),
+            ),
+        ),
+        is_open=State.is_zoomed,
+        on_overlay_click=lambda: State.toggle_zoom(""),
+    )
+
+
+def copy_message_board() -> rx.Component:
+    # zoom image component
+
+    return rx.drawer(
+        rx.drawer_content(
+            # rx.text("Copied!"),
+            # rx.drawer_header("Copied!"),
+            rx.center(
+                rx.drawer_header(
+                    "Copied!",
+                    color="white",
+                ),
+            ),
+            bg="rgba(0, 0, 0, 0.3)",
+        ),
+        is_open=State.show_copy_in_top,
+        # placement prop to position drawer at top
+        placement="top",
     )

@@ -5,6 +5,7 @@ import httpx
 import asyncio
 from .func import helper
 from PIL import Image
+from PIL.Image import Image as pil_Image
 from io import BytesIO
 import time
 
@@ -122,24 +123,20 @@ class State(rx.State):
 
     text: str
     text_list: list[int] = []
-    img_src: str
 
     counter: int = 0
 
+    ## about the front work
+    zoom_image: pil_Image = ""
+
     is_zoomed: bool = False
 
-    show_copy_in_top: bool = False
-
-    def toggle_zoom(self):
+    async def toggle_zoom(self, image: pil_Image = ""):
         self.is_zoomed = not self.is_zoomed
+        self.zoom_image = image
+        yield
 
-    def send(self):
-        self.text_list = [i for i in range(int(self.text))]
-        self.text = ""
-        self.counter = 0
-        yield rx.console_log("here")
-
-    img_src_arr: list[tuple[int, Image.Image]]
+    show_copy_in_top: bool = False
 
     async def copy_show(self, image_url: str):
         """
@@ -158,6 +155,16 @@ class State(rx.State):
         # time.sleep(1)
         await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top
+
+    # about the message #####
+
+    def send(self):
+        self.text_list = [i for i in range(int(self.text))]
+        self.text = ""
+        self.counter = 0
+        yield rx.console_log("here")
+
+    img_src_arr: list[tuple[int, Image.Image]]
 
     # send to server
     @rx.background

@@ -141,6 +141,9 @@ class State(rx.State):
 
     is_zoomed: bool = False
 
+    ## in book to comic button , when the user summit the text
+    is_cutting_prompt: bool = False
+
     async def toggle_zoom(self, image: pil_Image = ""):
         self.is_zoomed = not self.is_zoomed
         self.zoom_image = image
@@ -172,12 +175,14 @@ class State(rx.State):
         self.counter = 0
         yield rx.console_log("here")
 
-    img_src_arr: list[tuple[int, Image.Image]]
+    # 0: index , 1 : image , 2 : image_url , 3: prompt
+    img_src_arr: list[tuple[int, Image.Image, str, str]]
 
     # send to server
     @rx.background
     async def get_test_image(self):
         async with self:
+            self.img_src_arr = []
             self.img_src_arr = [(i, "") for i in range(int(self.text))]
             self.text = ""
 
@@ -195,7 +200,83 @@ class State(rx.State):
 
         async with self:
             for i, (res, res_url) in enumerate(response_arr):
-                self.img_src_arr[i] = (i, res, res_url)
+                self.img_src_arr[i] = (i, res, res_url, "cat is running")
+        return
+
+    async def get_test(self):
+        if self.text != "test":
+            return State.get_test_image
+        return State.get_test_image_2
+
+    @rx.background
+    async def get_test_image_2(self):
+        yield rx.console_log("run test 2")
+
+        async with self:
+            self.is_cutting_prompt = True
+            self.img_src_arr = []
+        yield
+
+        # TODO: demo get the prompt
+        # demo delay
+        await asyncio.sleep(3)
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get("http://140.113.238.35:5000/test_get_prompt")
+
+        # yield rx.console_log(response.text)
+        res = response.json()
+        prompt_res_list = res["prompt"]
+
+        async with self:
+            self.is_cutting_prompt = False
+        yield
+
+        # TODO: update the member
+        async with self:
+            self.img_src_arr = [
+                (
+                    i,
+                    "",
+                    "",
+                    prompt,
+                )
+                for i, prompt in enumerate(prompt_res_list)
+            ]
+            self.text = ""
+
+        response_arr = []
+
+        # TODO: demo use prompt to get the image
+        async with httpx.AsyncClient() as client:
+            # tasks = [
+            #     client.get("http://140.113.238.35:5000/test_get_image")
+            #     for _ in prompt_res_list
+            # ]
+
+            tasks = [
+                client.get("http://140.113.238.35:5000/test_get_image")
+                for prompt in prompt_res_list
+            ]
+            # run in same time
+            response = await asyncio.gather(*tasks)
+
+        response_arr = [
+            (
+                Image.open(BytesIO(item.content)),
+                helper.image_to_url(item.content),
+                prompt,
+            )
+            for (prompt, item) in zip(prompt_res_list, response)
+        ]
+
+        # update the image
+        async with self:
+            self.img_src_arr = [
+                (i, res, res_url, prompt)
+                for i, (res, res_url, prompt) in enumerate(response_arr)
+            ]
+
         return
 
     def image_refresh(self):

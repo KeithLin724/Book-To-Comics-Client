@@ -11,7 +11,7 @@ def textbox() -> rx.Component:
         ),
         rx.button(
             "Send",
-            on_click=State.get_test_image,
+            on_click=State.get_test,
             border_radius="1em",
             box_shadow="rgba(151, 65, 252, 0.8) 0 15px 30px -10px",
             background_image="linear-gradient(144deg,#AF40FF,#5B42F3 50%,#00DDEB)",
@@ -22,11 +22,14 @@ def textbox() -> rx.Component:
                 "opacity": 1,
             },
             is_disabled=State.text == "",
+            is_loading=State.is_cutting_prompt,
+            loading_text="thinking...",
+            spinner_placement="start",
         ),
     )
 
 
-def single_img_frame(index: int, image, image_url) -> rx.Component:
+def single_img_frame(index: int, image, image_url, image_prompt: str) -> rx.Component:
     """
     single image frame
 
@@ -58,11 +61,12 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
                         # zoom image
                         on_click=lambda: State.toggle_zoom(image),
                     ),
-                    label="cat is running",
+                    label=f"{image_prompt}",
                     has_arrow=True,
                 ),
             ),
             rx.text(f"Picture {index+1}"),
+            rx.text(f"Prompt : {image_prompt}"),
             rx.text(f"Change Image times: {State.counter}"),
             rx.button(
                 "Change Image",
@@ -95,6 +99,7 @@ def display_image_board() -> rx.Component:
                 item[0],
                 item[1],
                 item[2],
+                item[3],
             ),
         ),
         flex_wrap="wrap",

@@ -155,6 +155,7 @@ class State(rx.State):
         # time.sleep(1)
         await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top
+        yield
 
     # about the message #####
 

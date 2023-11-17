@@ -1,6 +1,5 @@
 import reflex as rx
 from Book_To_Comics_Client.state import State
-from functools import partial
 
 
 def textbox() -> rx.Component:
@@ -72,7 +71,7 @@ def single_img_frame(index: int, image, image_url) -> rx.Component:
             ),
             rx.button(
                 "Copy Image",
-                on_click=partial(State.copy_show, image_url),
+                on_click=lambda: State.copy_show(image_url),
                 is_disabled=image == "",
             ),
         ),

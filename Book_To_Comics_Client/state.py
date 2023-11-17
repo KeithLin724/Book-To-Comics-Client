@@ -22,6 +22,12 @@ class State(rx.State):
     question: str
     chat_history: list[tuple[str, str]]
 
+    ai_is_thinking: bool = False
+
+    def answer_ai_enter(self, key_event):
+        if key_event == "Enter" and self.question != "":
+            return self.answer_ai()
+
     async def answer_ai(self):
         # Our chatbot is not very smart right now...
         format_request = {
@@ -29,6 +35,9 @@ class State(rx.State):
             "name": "tmp",
             "prompt": self.question,
         }
+        self.ai_is_thinking = True
+        yield
+
         async with httpx.AsyncClient() as client:
             # response = await client.get("http://localhost:8000/ping")
             response = await client.post(
@@ -43,6 +52,7 @@ class State(rx.State):
 
         # Clear the question input.
         self.question = ""
+        self.ai_is_thinking = False
         # Yield here to clear the frontend input before continuing.
         yield
 

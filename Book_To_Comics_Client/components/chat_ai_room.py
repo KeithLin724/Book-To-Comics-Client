@@ -65,10 +65,15 @@ def action_bar() -> rx.Component:
             placeholder="Ask a question",
             on_change=State.set_question,
             style=input_style,
+            on_key_up=State.answer_ai_enter,
         ),
         rx.button(
             "Ask",
             on_click=State.answer_ai,
             style=button_style,
+            is_disabled=State.question == "",
+            is_loading=State.ai_is_thinking,
+            loading_text="thinking...",
+            spinner_placement="start",
         ),
     )

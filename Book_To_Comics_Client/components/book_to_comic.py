@@ -27,7 +27,21 @@ def textbox() -> rx.Component:
     )
 
 
-def single_img_button(index: int, image, image_url) -> rx.Component:
+def single_img_frame(index: int, image, image_url) -> rx.Component:
+    """
+    single image frame
+
+    The `single_img_button` function returns a component that displays an image, along with buttons to
+    change the image and copy the image URL.
+
+    :param index: An integer representing the index of the image
+    :type index: int
+    :param image: The `image` parameter is a string that represents the image source or URL. It is used
+    to display the image in the component
+    :param image_url: The `image_url` parameter is the URL of the image that will be displayed in the
+    component
+    :return: The function `single_img_button` returns a `rx.Component` object.
+    """
     return rx.box(
         rx.vstack(
             rx.cond(
@@ -95,10 +109,18 @@ def single_img_button(index: int, image, image_url) -> rx.Component:
 
 
 def display_image_board() -> rx.Component:
+    """
+    display image boarder
+
+
+    The function `display_image_board` returns a component that displays a board of images using the
+    `rx` library.
+    :return: a reactive component that displays an image board.
+    """
     return rx.flex(
         rx.foreach(
             State.img_src_arr,
-            lambda item: single_img_button(
+            lambda item: single_img_frame(
                 item[0],
                 item[1],
                 item[2],

@@ -18,17 +18,5 @@ def book_to_comic() -> rx.Component:
         ),
         btc.textbox(),
         btc.display_image_board(),
-        # rx.flex(
-        #     rx.foreach(
-        #         State.img_src_arr,
-        #         lambda item: btc.single_img_button(
-        #             item[0],
-        #             item[1],
-        #             item[2],
-        #         ),
-        #     ),
-        #     flex_wrap="wrap",
-        #     width="100%",
-        # ),
         padding_top="20px",
     )

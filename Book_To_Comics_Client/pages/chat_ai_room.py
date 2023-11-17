@@ -1,13 +1,11 @@
 """The dashboard page."""
 from Book_To_Comics_Client.templates import template
+from Book_To_Comics_Client.components import chat_ai_room as chat_ai
+from Book_To_Comics_Client.styles import markdown_style
 
 import reflex as rx
-from ..components import chat_ai_room as chat_ai
 
 # from ..components import chat_ai_room as chat_com
-from ..styles import (
-    markdown_style,
-)
 
 
 @template(route="/chat", title="Chat")

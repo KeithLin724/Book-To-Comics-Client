@@ -1,12 +1,12 @@
 import reflex as rx
-from ..styles import (
+from Book_To_Comics_Client.state import State
+from Book_To_Comics_Client.styles import (
     input_style,
     button_style,
     question_style,
     answer_style,
     markdown_style,
 )
-from ..state import State
 
 
 def qa(question: str, answer: str) -> rx.Component:

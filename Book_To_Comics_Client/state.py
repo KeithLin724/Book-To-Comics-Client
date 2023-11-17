@@ -249,11 +249,6 @@ class State(rx.State):
 
         # TODO: demo use prompt to get the image
         async with httpx.AsyncClient() as client:
-            # tasks = [
-            #     client.get("http://140.113.238.35:5000/test_get_image")
-            #     for _ in prompt_res_list
-            # ]
-
             tasks = [
                 client.get("http://140.113.238.35:5000/test_get_image")
                 for prompt in prompt_res_list

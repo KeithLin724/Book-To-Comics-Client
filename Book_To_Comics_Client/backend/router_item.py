@@ -2,8 +2,8 @@ from pydantic import BaseModel
 
 
 class CutPromptItem(BaseModel):
-    message: str
+    prompt: str
 
 
 class ListPromptItem(BaseModel):
-    message: list[str]
+    prompt: list[str]

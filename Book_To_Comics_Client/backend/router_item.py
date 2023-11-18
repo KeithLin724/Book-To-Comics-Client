@@ -6,4 +6,4 @@ class CutPromptItem(BaseModel):
 
 
 class ListPromptItem(BaseModel):
-    prompt: list[str]
+    prompt_list: list[str]

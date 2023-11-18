@@ -3,7 +3,7 @@ import httpx
 import ast
 import asyncio
 
-from router_item import CutPromptItem, ListPromptItem
+from Book_To_Comics_Client.backend.router_item import CutPromptItem, ListPromptItem
 
 ai_router = APIRouter()
 

@@ -5,6 +5,7 @@ from Book_To_Comics_Client.styles import input_style
 
 def textbox() -> rx.Component:
     return rx.vstack(
+        # text area (summit story or something)
         rx.editable(
             rx.editable_preview(),
             rx.editable_textarea(),
@@ -16,6 +17,7 @@ def textbox() -> rx.Component:
             start_with_edit_view=True,
             width="100%",
         ),
+        # summit button
         rx.button(
             "Send",
             on_click=State.get_test,

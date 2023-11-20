@@ -12,6 +12,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    args:
+      API_URL: https://${DOMAIN:-localhost}
     ports:
       - 3000:3000
       - 8000:8000

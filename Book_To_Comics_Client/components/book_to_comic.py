@@ -1,12 +1,19 @@
 import reflex as rx
 from Book_To_Comics_Client.state import State
+from Book_To_Comics_Client.styles import input_style
 
 
 def textbox() -> rx.Component:
     return rx.vstack(
-        rx.text_area(
-            on_change=State.set_text,
+        rx.editable(
+            rx.editable_preview(),
+            rx.editable_textarea(),
+            style=input_style,
+            placeholder="input some story ...",
             value=State.text,
+            on_change=State.set_text,
+            on_submit=State.set_text,
+            start_with_edit_view=True,
             width="100%",
         ),
         rx.button(

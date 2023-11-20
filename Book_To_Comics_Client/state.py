@@ -189,6 +189,7 @@ class State(rx.State):
         yield rx.console_log("run test 2")
 
         async with self:
+            self.text = ""
             self.is_cutting_prompt = True
             self.img_src_arr = []
         yield

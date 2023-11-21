@@ -7,7 +7,7 @@ from PIL import Image
 from PIL.Image import Image as pil_Image
 from io import BytesIO
 import time
-from Book_To_Comics_Client.func import helper
+from Book_To_Comics_Client.func import helper, book_to_comics_func as btc_func
 
 
 class State(rx.State):
@@ -261,15 +261,7 @@ class State(rx.State):
             self.img_src_arr = []
 
         # TODO: get cut prompt
-        json_data = {"prompt": self.text}
-
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://localhost:8000/cut_prompt",
-                json=json_data,
-            )
-
-        result_prompt = response.json()
+        result_prompt = await btc_func.cut_prompt(self.text)
         provider, prompt_res_list = result_prompt["provider"], result_prompt["message"]
 
         yield rx.console_log(f"cut prompt provider is {provider}")
@@ -292,15 +284,7 @@ class State(rx.State):
         yield
 
         # TODO: send cut prompt get the tasks id
-        json_data = {"prompt_list": prompt_res_list}
-
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://localhost:8000/list_prompt_to_image",
-                json=json_data,
-            )
-
-        result_task_list = response.json()
+        result_task_list = await btc_func.prompt_to_image(prompt_res_list)
         result_task_list = result_task_list["result"]
 
         # TODO: each array location wait the image is process success

@@ -251,6 +251,62 @@ class State(rx.State):
 
         return
 
+    @rx.background
+    async def run_book_to_comics(self):
+        yield rx.console_log("run book to comics")
+
+        # TODO: init
+        async with self:
+            self.is_cutting_prompt = True
+            self.img_src_arr = []
+
+        # TODO: get cut prompt
+        json_data = {"prompt": self.text}
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8000/cut_prompt",
+                json=json_data,
+            )
+
+        result_prompt = response.json()
+        provider, prompt_res_list = result_prompt["provider"], result_prompt["message"]
+
+        yield rx.console_log(f"cut prompt provider is {provider}")
+
+        # TODO: update the member
+        async with self:
+            self.is_cutting_prompt = False
+            self.img_src_arr = [
+                (
+                    i,  # index
+                    "",  # image
+                    "",  # image_url
+                    prompt,  # prompt
+                )
+                for i, prompt in enumerate(prompt_res_list)
+            ]
+
+            self.text = ""
+
+        yield
+
+        # TODO: send cut prompt get the tasks id
+        json_data = {"prompt_list": prompt_res_list}
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8000/list_prompt_to_image",
+                json=json_data,
+            )
+
+        result_task_list = response.json()
+        result_task_list = result_task_list["result"]
+
+        # TODO: each array location wait the image is process success
+
+        return
+
     def image_refresh(self):
         yield rx.window_alert("You clicked the image!")
         self.counter += 1

@@ -289,8 +289,58 @@ class State(rx.State):
         result_task_list = result_task_list["result"]
 
         # TODO: each array location wait the image is process success
+        # 创建任务列表，每个任务对应一个图像处理任务
+        tasks = [
+            State.poll_for_image_result(index, task_id_dict)
+            for index, task_id_dict in enumerate(result_task_list)
+        ]
 
+        # 并发运行所有任务
+        await asyncio.gather(*tasks)
         return
+
+    @rx.background
+    async def poll_for_image_result(self, index: int, task_id_dict: dict) -> None:
+        RESULT_SERVICE_FORMAT = {
+            "type_service": "string",
+            "unique_id": "string",
+            "file_path": "string",
+            "file_name": "string",
+            "time": "string",
+            "request_path": "string",
+        }
+
+        json_data = task_id_dict | RESULT_SERVICE_FORMAT
+
+        while True:
+            # result = await check_image_status(task_id, index)
+
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "http://140.113.238.35:5000/result_service",
+                    json=json_data,
+                )
+
+            result = response.json()
+            # TODO: use the state code to check is it success
+            # TODO: check the content type
+            if result["state"] == "finished":
+                result_item = result["result"]
+                pass
+
+                yield rx.console_log(f"get image number:{index}")
+                break
+
+            await asyncio.sleep(1)  # 休眠1秒后再次检查
+
+        async with self:
+            prompt = self.img_src_arr[index][-1]
+            self.img_src_arr[index] = (
+                index,
+                Image.open(BytesIO(result_item.content)),
+                helper.image_to_url(result_item.content),
+                prompt,
+            )
 
     def image_refresh(self):
         yield rx.window_alert("You clicked the image!")

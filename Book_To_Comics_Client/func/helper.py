@@ -1,6 +1,7 @@
 import base64
 import io
 from PIL.Image import Image
+import httpx
 
 
 def image_to_url(image_content: bytes) -> str:
@@ -19,6 +20,13 @@ def image_to_url(image_content: bytes) -> str:
 
 def image_to_markdown(image_url: str) -> str:
     return f"![Image]({image_url})"
+
+
+async def send_post_request(url: str, data_dict: dict) -> dict:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, json=data_dict)
+
+    return response.json()
 
 
 # def pil_image_to_url(image: Image):

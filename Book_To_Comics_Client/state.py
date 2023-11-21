@@ -43,6 +43,7 @@ class State(rx.State):
             response = await client.post(
                 "http://140.113.238.35:5000/generate_service",
                 json=format_request,
+                timeout=10,
             )
 
         res = response.json()

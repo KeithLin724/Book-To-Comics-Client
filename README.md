@@ -5,20 +5,32 @@
 
 ## Information about the project 
 - ### Why we created this tool? 
-  - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. While searching our project topic, we discovered that many people have not used text-to-image tools before or unware of them. Therefore, we developed this tool to introduce people text-to-image techniques, expecting to make more individuals aware of the powerful tool.
+  - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. 
+  
+    While searching our project topic, we discovered that many people have not used text-to-image tools before or unware of them. 
+    
+    Therefore, we developed this tool to introduce people text-to-image techniques, expecting to make more individuals aware of the powerful tool.
 - ### What are the functions of this tool?
-  - In our project, we provide a tool which can be used to display pictures of the corresponding to the prompts from stories users provided. Furthermore, we build a user friendly page where users can chat with AI. This setup allows users to utilize the tools more conveniently, eliminating the need to open multiple screens.
+  - In our project, we provide a tool which can be used to display pictures of the corresponding to the prompts from stories users provided. 
+   
+    Furthermore, we build a user friendly page where users can chat with AI. 
+    
+    This setup allows users to utilize the tools more conveniently, eliminating the need to open multiple screens.
 
 ## About the Project Technique
 ### 1. Book-To-Comics
 - #### Flow 
-    The tool provides users to generate corresponding pictures of their stories. The picture shown below is a simple flow of how book-to-comics works.
+    The tool provides users to generate corresponding pictures of their stories. 
+    
+    The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
         ![image](/assets/book%20to%20comic%20flow.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
-        After you entered your story, the story cutter will generate several prompts according to the story. The message below is how we ask text generator to cut the story into prompts.
+        After you entered your story, the story cutter will generate several prompts according to the story. 
+        
+        The message below is how we ask text generator to cut the story into prompts.
         ```python
         message: f"can you cut list of prompt in the message to describe the image how to look like, return like ['...' , '...' , ...], message is {message}"
         ```
@@ -28,7 +40,9 @@
     Finally, you can see your story turn into pictures and narrations, or more precisely, a picture/comic book.
 
 ### 2. Chat with AI
-In the Chat with AI, you can communicate with the AI just like using ChatGPT. In our project, we use a tool called 'g4f' to perform tasks similar to ChatGPT's functions, but without the need to host an LLM on our server.
+In the Chat with AI, you can communicate with the AI just like using ChatGPT. 
+
+In our project, we use a tool called 'g4f' to perform tasks similar to ChatGPT's functions, but without the need to host an LLM on our server.
 
 The command to call `g4f` is showned below:
 ```python

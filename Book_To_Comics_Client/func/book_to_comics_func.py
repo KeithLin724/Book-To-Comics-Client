@@ -1,15 +1,9 @@
-from fastapi import APIRouter
-import httpx
 import ast
+import httpx
 import asyncio
 
-from Book_To_Comics_Client.backend.router_item import CutPromptItem, ListPromptItem
 
-ai_router = APIRouter()
-
-
-@ai_router.post("/cut_prompt")
-async def cut_prompt(message: CutPromptItem):
+async def cut_prompt(message_in: str):
     """
     The `cut_prompt` function takes a `CutPromptItem` message as input, cuts the list of prompts in the
     message to describe the image, and returns the provider and the list of prompt items.
@@ -29,7 +23,7 @@ async def cut_prompt(message: CutPromptItem):
 
     json_data = {
         "type_service": "chat",
-        "prompt": CUT_PROMPT_FUNC(message=message),
+        "prompt": CUT_PROMPT_FUNC(message=message_in),
     }
 
     # TODO: send request to server
@@ -55,15 +49,14 @@ async def cut_prompt(message: CutPromptItem):
     }
 
 
-@ai_router.post("/list_prompt_to_image")
-async def prompt_to_image(list_of_prompt: ListPromptItem):
+async def prompt_to_image(list_of_prompt: list[str]):
     # TODO: make the prompt to json_data request
     json_data_list = [
         {
             "type_service": "text_to_image",
             "prompt": prompt_item,
         }
-        for prompt_item in list_of_prompt.prompt_list
+        for prompt_item in list_of_prompt
     ]
 
     # TODO: send request to server

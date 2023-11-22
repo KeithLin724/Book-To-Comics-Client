@@ -1,26 +1,12 @@
 import reflex as rx
-from ..styles import (
+from Book_To_Comics_Client.state import State
+from Book_To_Comics_Client.styles import (
     input_style,
     button_style,
     question_style,
     answer_style,
     markdown_style,
 )
-from ..state import State
-
-
-def qa(question: str, answer: str) -> rx.Component:
-    return rx.box(
-        rx.box(
-            rx.text(question, style=question_style),
-            text_align="right",
-        ),
-        rx.box(
-            rx.text(answer, style=answer_style),
-            text_align="left",
-        ),
-        margin_y="1em",
-    )
 
 
 def qa_markdown(question: str, answer: str) -> rx.Component:
@@ -35,15 +21,20 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
             ),
             text_align="right",
         ),
-        rx.box(
+        rx.tooltip(
             rx.box(
-                rx.markdown(
-                    answer,
-                    component_map=markdown_style,
+                rx.box(
+                    rx.markdown(
+                        answer,
+                        component_map=markdown_style,
+                    ),
+                    style=answer_style,
                 ),
-                style=answer_style,
+                text_align="left",
+                on_click=lambda: State.copy_show(answer),
             ),
-            text_align="left",
+            label="copy",
+            has_arrow=True,
         ),
         margin_y="1em",
     )
@@ -65,10 +56,36 @@ def action_bar() -> rx.Component:
             placeholder="Ask a question",
             on_change=State.set_question,
             style=input_style,
+            on_key_up=State.answer_ai_enter,
         ),
         rx.button(
             "Ask",
             on_click=State.answer_ai,
             style=button_style,
+            is_disabled=State.question == "",
+            is_loading=State.ai_is_thinking,
+            loading_text="thinking...",
+            spinner_placement="start",
         ),
+    )
+
+
+def copy_message_board() -> rx.Component:
+    # zoom image component
+
+    return rx.drawer(
+        rx.drawer_content(
+            # rx.text("Copied!"),
+            # rx.drawer_header("Copied!"),
+            rx.center(
+                rx.drawer_header(
+                    "Copied!",
+                    color="white",
+                ),
+            ),
+            bg="rgba(0, 0, 0, 0.3)",
+        ),
+        is_open=State.show_copy_in_top,
+        # placement prop to position drawer at top
+        placement="top",
     )

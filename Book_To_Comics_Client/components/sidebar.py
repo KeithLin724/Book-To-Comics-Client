@@ -15,9 +15,14 @@ def sidebar_header() -> rx.Component:
     """
     return rx.hstack(
         # The logo.
-        rx.image(
-            src="/icon.svg",
-            height="2em",
+        rx.link(
+            rx.image(
+                # src="/icon.svg",
+                src="/NYCU_VISION_LAB_LOGO.svg",
+                height="2em",
+            ),
+            href="http://vlab.iee.nycu.edu.tw/",
+            is_external=True,
         ),
         rx.spacer(),
         # Link to Reflex GitHub repo.

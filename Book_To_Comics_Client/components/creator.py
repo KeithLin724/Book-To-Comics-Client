@@ -12,6 +12,7 @@ def creator() -> rx.Component:
                 label="Keith Lin",
             ),
             href="https://github.com/KeithLin724",
+            is_external=True,
         ),
         rx.link(
             rx.tooltip(
@@ -22,5 +23,6 @@ def creator() -> rx.Component:
                 label="Vincent Lien",
             ),
             href="https://github.com/Vincent-Lien",
+            is_external=True,
         ),
     )

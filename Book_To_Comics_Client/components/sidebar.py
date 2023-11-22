@@ -16,10 +16,14 @@ def sidebar_header() -> rx.Component:
     return rx.hstack(
         # The logo.
         rx.link(
-            rx.image(
-                # src="/icon.svg",
-                src="/NYCU_VISION_LAB_LOGO.svg",
-                height="2em",
+            rx.tooltip(
+                rx.image(
+                    # src="/icon.svg",
+                    src="/NYCU_VISION_LAB_LOGO.svg",
+                    height="2em",
+                ),
+                label="open",
+                has_arrow=True,
             ),
             href="http://vlab.iee.nycu.edu.tw/",
             is_external=True,

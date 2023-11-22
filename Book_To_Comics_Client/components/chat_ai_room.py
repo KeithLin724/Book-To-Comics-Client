@@ -21,21 +21,6 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
             ),
             text_align="right",
         ),
-        # rx.tooltip(
-        #     rx.box(
-        #         rx.box(
-        #             rx.markdown(
-        #                 answer,
-        #                 component_map=markdown_style,
-        #             ),
-        #             style=answer_style,
-        #         ),
-        #         text_align="left",
-        #         on_click=lambda: State.copy_show(answer),
-        #     ),
-        #     label="copy",
-        #     has_arrow=True,
-        # ),
         rx.box(
             rx.tooltip(
                 rx.box(

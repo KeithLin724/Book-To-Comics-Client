@@ -7,7 +7,7 @@ import reflex as rx
 
 @template(route="/book_to_comic", title="Book_to_Comic")
 def book_to_comic() -> rx.Component:
-    return rx.vstack(
+    return rx.fragment(
         rx.heading("Book to Comic", font_size="3em"),
         rx.text("Welcome to Book to Comic!"),
         rx.text(

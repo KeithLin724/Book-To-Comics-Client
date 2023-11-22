@@ -49,6 +49,23 @@ def sidebar_footer() -> rx.Component:
         The sidebar footer component.
     """
     return rx.hstack(
+        rx.text("Member"),
+        rx.avatar_group(
+            rx.link(
+                rx.avatar(
+                    src="https://avatars.githubusercontent.com/u/38067890?v=4",
+                    name="Keith Lin",
+                ),
+                href="https://github.com/KeithLin724",
+            ),
+            rx.link(
+                rx.avatar(
+                    src="https://avatars.githubusercontent.com/u/148564112?v=4",
+                    name="Vincent Lien",
+                ),
+                href="https://github.com/Vincent-Lien",
+            ),
+        ),
         rx.spacer(),
         rx.link(
             rx.text("Docs"),

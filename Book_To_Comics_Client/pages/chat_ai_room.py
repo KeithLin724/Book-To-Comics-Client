@@ -8,14 +8,14 @@ import reflex as rx
 # from ..components import chat_ai_room as chat_com
 
 
-@template(route="/chat", title="Chat")
+@template(route="/chat", title="Chat", image="/chat-with-ai.svg")
 def chat_ai_room() -> rx.Component:
     """The dashboard page.
 
     Returns:
         The UI for the dashboard page.
     """
-    return rx.vstack(
+    return rx.fragment(
         rx.heading(
             "Chat to AI",
             font_size="3em",

@@ -4,6 +4,7 @@ from Book_To_Comics_Client import styles
 from Book_To_Comics_Client.state import State
 
 import reflex as rx
+from Book_To_Comics_Client.components import creator as c
 
 
 def sidebar_header() -> rx.Component:
@@ -50,22 +51,7 @@ def sidebar_footer() -> rx.Component:
     """
     return rx.hstack(
         rx.text("Member"),
-        rx.avatar_group(
-            rx.link(
-                rx.avatar(
-                    src="https://avatars.githubusercontent.com/u/38067890?v=4",
-                    name="Keith Lin",
-                ),
-                href="https://github.com/KeithLin724",
-            ),
-            rx.link(
-                rx.avatar(
-                    src="https://avatars.githubusercontent.com/u/148564112?v=4",
-                    name="Vincent Lien",
-                ),
-                href="https://github.com/Vincent-Lien",
-            ),
-        ),
+        c.creator(),
         rx.spacer(),
         rx.link(
             rx.text("Docs"),

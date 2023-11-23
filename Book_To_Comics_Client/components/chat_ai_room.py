@@ -21,8 +21,8 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
             ),
             text_align="right",
         ),
-        rx.tooltip(
-            rx.box(
+        rx.box(
+            rx.tooltip(
                 rx.box(
                     rx.markdown(
                         answer,
@@ -30,11 +30,11 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
                     ),
                     style=answer_style,
                 ),
-                text_align="left",
-                on_click=lambda: State.copy_show(answer),
+                label="copy",
+                has_arrow=True,
             ),
-            label="copy",
-            has_arrow=True,
+            text_align="left",
+            on_click=lambda: State.copy_show(answer),
         ),
         margin_y="1em",
     )
@@ -50,22 +50,26 @@ def chat() -> rx.Component:
 
 
 def action_bar() -> rx.Component:
-    return rx.hstack(
-        rx.input(
-            value=State.question,
-            placeholder="Ask a question",
-            on_change=State.set_question,
-            style=input_style,
-            on_key_up=State.answer_ai_enter,
-        ),
-        rx.button(
-            "Ask",
-            on_click=State.answer_ai,
-            style=button_style,
-            is_disabled=State.question == "",
-            is_loading=State.ai_is_thinking,
-            loading_text="thinking...",
-            spinner_placement="start",
+    return rx.center(
+        rx.hstack(
+            rx.fragment(
+                rx.input(
+                    value=State.question,
+                    placeholder="Ask a question",
+                    on_change=State.set_question,
+                    style=input_style,
+                    on_key_up=State.answer_ai_enter,
+                ),
+            ),
+            rx.button(
+                "Ask",
+                on_click=State.answer_ai,
+                style=button_style,
+                is_disabled=State.question == "",
+                is_loading=State.ai_is_thinking,
+                loading_text="thinking...",
+                spinner_placement="start",
+            ),
         ),
     )
 

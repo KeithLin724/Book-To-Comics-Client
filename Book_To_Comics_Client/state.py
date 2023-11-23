@@ -297,6 +297,8 @@ class State(rx.State):
 
         # 并发运行所有任务
         await asyncio.gather(*tasks)
+        yield
+
         return
 
     @rx.background
@@ -341,6 +343,7 @@ class State(rx.State):
                 helper.image_to_url(result_item.content),
                 prompt,
             )
+        yield
 
     def image_refresh(self):
         yield rx.window_alert("You clicked the image!")

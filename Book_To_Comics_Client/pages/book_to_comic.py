@@ -5,9 +5,9 @@ from Book_To_Comics_Client.components import book_to_comic as btc
 import reflex as rx
 
 
-@template(route="/book_to_comic", title="Book_to_Comic")
+@template(route="/book_to_comic", title="Book to Comic", image="/book-to-comics.svg")
 def book_to_comic() -> rx.Component:
-    return rx.vstack(
+    return rx.fragment(
         rx.heading("Book to Comic", font_size="3em"),
         rx.text("Welcome to Book to Comic!"),
         rx.text(

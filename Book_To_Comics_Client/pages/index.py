@@ -2,6 +2,7 @@
 
 from Book_To_Comics_Client import styles
 from Book_To_Comics_Client.templates import template
+from Book_To_Comics_Client.components import creator as c
 
 import reflex as rx
 
@@ -15,7 +16,8 @@ def index() -> rx.Component:
     """
     with open("docs/README.md", encoding="utf-8") as readme:
         content = readme.read()
-    return rx.markdown(
-        content,
-        component_map=styles.markdown_style,
+
+    return rx.fragment(
+        c.creator(),
+        rx.markdown(content, component_map=styles.markdown_style),
     )

@@ -4,6 +4,7 @@ from Book_To_Comics_Client import styles
 from Book_To_Comics_Client.state import State
 
 import reflex as rx
+from Book_To_Comics_Client.components import creator as c
 
 
 def sidebar_header() -> rx.Component:
@@ -14,9 +15,18 @@ def sidebar_header() -> rx.Component:
     """
     return rx.hstack(
         # The logo.
-        rx.image(
-            src="/icon.svg",
-            height="2em",
+        rx.link(
+            rx.tooltip(
+                rx.image(
+                    # src="/icon.svg",
+                    src="/NYCU_VISION_LAB_LOGO.svg",
+                    height="2em",
+                ),
+                label="open",
+                has_arrow=True,
+            ),
+            href="http://vlab.iee.nycu.edu.tw/",
+            is_external=True,
         ),
         rx.spacer(),
         # Link to Reflex GitHub repo.
@@ -49,6 +59,8 @@ def sidebar_footer() -> rx.Component:
         The sidebar footer component.
     """
     return rx.hstack(
+        rx.text("Member"),
+        c.creator(),
         rx.spacer(),
         rx.link(
             rx.text("Docs"),

@@ -6,8 +6,11 @@ import asyncio
 from PIL import Image
 from PIL.Image import Image as pil_Image
 from io import BytesIO
-import time
-from Book_To_Comics_Client.func import helper, book_to_comics_func as btc_func
+from Book_To_Comics_Client.func import (
+    helper,
+    book_to_comics_func as btc_func,
+    creator_item as c_item,
+)
 
 
 class State(rx.State):
@@ -91,20 +94,35 @@ class State(rx.State):
                 # self.posts.append(response.text)
                 self.res = response.text
 
-    @rx.background
-    async def get_request(self, url):
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url)
-            async with self:
-                self.res = f"code : {response.status_code} , {response.text}"
+    ############################
+    ## creator information ##
+    creator_info: list[c_item.User]
+    CREATOR: list[str] = ["KeithLin724", "Vincent-Lien"]
 
-    # @rx.background
-    async def test_get_request(self):
+    @rx.background
+    async def load_creator_info(self):
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:8000/ping")
-        self.res = response.text
-        # async with self:
-        #     self.res = result.text
+            tasks = [
+                client.get(c_item.User.GITHUB_API(user_name=creator_name))
+                for creator_name in self.CREATOR
+            ]
+
+            response = await asyncio.gather(*tasks)
+
+        response = [item.json() for item in response]
+
+        async with self:
+            tasks = [
+                c_item.User.parse_obj_with_async(result_item)
+                for result_item in response
+            ]
+
+            obj = await asyncio.gather(*tasks)
+
+            self.creator_info = obj
+        yield rx.console_log(obj)
+
+        return
 
     ############################
 

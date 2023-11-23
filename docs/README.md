@@ -24,7 +24,7 @@
     
     The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
-        ![image](/assets/book%20to%20comic%20flow.png)
+        ![image](/book%20to%20comic%20flow.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
@@ -32,7 +32,10 @@
         
         The message below is how we ask text generator to cut the story into prompts.
         ```python
-        message: f"can you cut list of prompt in the message to describe the image how to look like, return like ['...' , '...' , ...], message is {message}"
+        message: f"""
+        can you cut list of prompt in the message to describe the image how to look like,
+        return like ['...' , '...' , ...], message is {message}
+        """
         ```
     - #### Image Generation
         While the image generator get the prompts from story cutter, the image generator will generate corresponding image for each prompt.
@@ -55,21 +58,21 @@ import g4f
 
     Without using asynchronously method to send request:
     
-    ![image](/assets/long%20reaction%20time%20origin.png)
+    ![image](/long%20reaction%20time%20origin.png)
 
     We found using the async method can speed up the response.
 
     Using asynchronously method to send request:
     
-    ![image](/assets/long%20reaction%20time%20improve.png)
-
+    ![image](/long%20reaction%20time%20improve.png)
 
 ## Example Story
+<!-- ## Example Story
 ```
 Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child. Once she gave her a little cap of red velvet, which suited her so well that she would never wear anything else. So she was always called Little Red Riding Hood.
 
 One day her mother said to her, "Come, Little Red Riding Hood, here is a piece of cake and a bottle of wine. Take them to your grandmother, she is ill and weak, and they will do her good. Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing. And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it."
-```
+``` -->
 Story reference: https://americanliterature.com/childrens-stories/little-red-riding-hood
 
 <!-- 

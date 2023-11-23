@@ -96,7 +96,7 @@ class State(rx.State):
 
     ############################
     ## creator information ##
-    creator_info: list[c_item.User]
+    creator_info: list[dict[str, str]]
     CREATOR: list[str] = ["KeithLin724", "Vincent-Lien"]
 
     @rx.background
@@ -112,15 +112,9 @@ class State(rx.State):
         response = [item.json() for item in response]
 
         async with self:
-            tasks = [
-                c_item.User.parse_obj_with_async(result_item)
-                for result_item in response
-            ]
+            self.creator_info = response
 
-            obj = await asyncio.gather(*tasks)
-
-            self.creator_info = obj
-        yield rx.console_log(obj)
+        yield rx.console_log(self.creator_info)
 
         return
 

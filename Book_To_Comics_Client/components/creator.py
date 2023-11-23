@@ -30,24 +30,24 @@ def creator() -> rx.Component:
     )
 
 
-def make_detail_card(creator_data: User) -> rx.Component:
+def make_detail_card(creator_data: dict[str, str]) -> rx.Component:
     return rx.card(
-        rx.text(creator_data.bio),
+        rx.text(creator_data["bio"]),
         header=rx.hstack(
-            rx.heading("Header", size="lg"),
+            rx.heading(creator_data["login"], size="lg"),
             rx.link(
                 rx.tooltip(
                     rx.avatar(
-                        src=creator_data.avatar_url,
-                        name=creator_data.name,
+                        src=creator_data["avatar_url"],
+                        name=creator_data["name"],
                     ),
-                    label="Keith Lin",
+                    label=creator_data["login"],
                 ),
-                href=creator_data.html_url,
+                href=creator_data["html_url"],
                 is_external=True,
             ),
         ),
-        footer=rx.heading("Footer", size="sm"),
+        footer=rx.heading("public repos", size="sm"),
     )
 
 

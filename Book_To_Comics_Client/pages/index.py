@@ -8,7 +8,9 @@ from Book_To_Comics_Client.state import State
 import reflex as rx
 
 
-@template(route="/", title="Home", image="/github.svg", on_load=State.load_creator_info)
+@template(
+    route="/", title="Home", image="/github.svg"
+)  # , on_load=State.load_creator_info
 def index() -> rx.Component:
     """The home page.
 
@@ -21,7 +23,7 @@ def index() -> rx.Component:
     return rx.fragment(
         rx.markdown(content, component_map=styles.markdown_style),
         rx.divider(),
-        c.creator_cards(),
+        # c.creator_cards(),
         # rx.hstack(
         #     # rx.heading("Team"),
         #     # c.creator(),

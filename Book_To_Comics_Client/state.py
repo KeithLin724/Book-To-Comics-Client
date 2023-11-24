@@ -12,6 +12,15 @@ from Book_To_Comics_Client.func import (
     creator_item as c_item,
 )
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+SERVER_IP: str = os.getenv("SERVER_IP")
+SERVER_PORT: str = os.getenv("SERVER_PORT")
+SERVER_URL: str = f"{SERVER_IP}:{SERVER_PORT}"
+
 
 class State(rx.State):
     """Base state for the app.
@@ -22,6 +31,9 @@ class State(rx.State):
     """
     chat room start
     """
+    #### basic data ####
+
+    ##### chat #####
     question: str
     chat_history: list[tuple[str, str]]
 
@@ -44,7 +56,7 @@ class State(rx.State):
         async with httpx.AsyncClient() as client:
             # response = await client.get("http://localhost:8000/ping")
             response = await client.post(
-                "http://140.113.238.35:5000/generate_service",
+                f"http://{SERVER_URL}/generate_service",
                 json=format_request,
                 timeout=10,
             )
@@ -151,6 +163,7 @@ class State(rx.State):
         """
         self.show_copy_in_top = not self.show_copy_in_top
         yield rx.set_clipboard(copy_message)
+        yield rx.console_log(SERVER_URL)
         # time.sleep(1)
         await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top
@@ -178,7 +191,7 @@ class State(rx.State):
         response_arr = []
         async with httpx.AsyncClient() as client:
             for _ in self.img_src_arr:
-                response = await client.get("http://140.113.238.35:5000/test_get_image")
+                response = await client.get(f"http://{SERVER_URL}/test_get_image")
 
                 response_arr.append(
                     (
@@ -212,7 +225,7 @@ class State(rx.State):
         await asyncio.sleep(3)
 
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://140.113.238.35:5000/test_get_prompt")
+            response = await client.get(f"http://{SERVER_URL}/test_get_prompt")
 
         # yield rx.console_log(response.text)
         res = response.json()
@@ -240,7 +253,7 @@ class State(rx.State):
         # TODO: demo use prompt to get the image
         async with httpx.AsyncClient() as client:
             tasks = [
-                client.get("http://140.113.238.35:5000/test_get_image")
+                client.get(f"http://{SERVER_URL}/test_get_image")
                 for prompt in prompt_res_list
             ]
             # run in same time
@@ -331,7 +344,7 @@ class State(rx.State):
 
             async with httpx.AsyncClient() as client:
                 response = await client.post(
-                    "http://140.113.238.35:5000/result_service",
+                    f"http://{SERVER_URL}/result_service",
                     json=json_data,
                 )
 

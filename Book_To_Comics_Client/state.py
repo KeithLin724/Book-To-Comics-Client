@@ -132,7 +132,66 @@ class State(rx.State):
         return
 
     ############################
+    ## Text to Image
+    text_to_image_prompt: str
+    text_to_image_processing: bool = False
+    text_to_image_complete: bool = False
+    text_to_image_result: pil_Image = ""
 
+    @rx.background
+    async def get_text_to_image(self):
+        json_data = {
+            "type_service": "text_to_image",
+            "prompt": self.text_to_image_prompt,
+        }
+
+        async with self:
+            self.text_to_image_result = ""
+            self.text_to_image_processing, self.text_to_image_complete = True, False
+        yield
+
+        # TODO: send request
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"http://{SERVER_URL}/generate_service",
+                json=json_data,
+                timeout=10,
+            )
+
+        response = response.json()
+
+        json_data = {
+            "type_service": "text_to_image",
+            "unique_id": response["unique_id"],
+            "task_id": response["task_id"],
+            "file_path": "string",
+            "file_name": "string",
+            "time": "string",
+            "request_path": "string",
+        }
+
+        async with httpx.AsyncClient() as client:
+            while True:
+                response = await client.post(
+                    f"http://{SERVER_URL}/result_service",
+                    json=json_data,
+                )
+                content_type = response.headers.get("content-type")
+                if content_type == "image/jpeg":
+                    break
+
+                await asyncio.sleep(1)  # 休眠1秒后再次检查
+
+        image = Image.open(BytesIO(response.content))
+        async with self:
+            self.text_to_image_prompt = ""
+            self.text_to_image_result = image
+            self.text_to_image_processing, self.text_to_image_complete = False, True
+        yield
+
+        return
+
+    ############################
     text: str
     text_list: list[int] = []
 

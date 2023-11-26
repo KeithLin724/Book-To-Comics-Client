@@ -16,11 +16,14 @@ def input_box() -> rx.Component:
         ),
         rx.cond(
             State.text_to_image_complete,
-            rx.image(
-                src=State.text_to_image_result,
-                height="25em",
-                width="25em",
-                on_click=lambda: State.toggle_zoom(State.text_to_image_result),
+            rx.tooltip(
+                rx.image(
+                    src=State.text_to_image_result,
+                    height="25em",
+                    width="25em",
+                    on_click=lambda: State.toggle_zoom(State.text_to_image_result),
+                ),
+                label="zoom",
             ),
         ),
         padding="2em",

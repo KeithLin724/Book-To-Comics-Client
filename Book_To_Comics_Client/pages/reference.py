@@ -11,6 +11,6 @@ def reference() -> rx.Component:
     :return: a markdown component with the content of the README.md file. The component is styled using
     the `markdown_style` component map from the `styles` module.
     """
-    with open("README.md", encoding="utf-8") as readme:
+    with open("docs/reference.md", encoding="utf-8") as readme:
         content = readme.read()
     return rx.markdown(content, component_map=styles.markdown_style)

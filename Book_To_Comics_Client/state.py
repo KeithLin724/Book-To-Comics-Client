@@ -6,8 +6,21 @@ import asyncio
 from PIL import Image
 from PIL.Image import Image as pil_Image
 from io import BytesIO
+from Book_To_Comics_Client.func import (
+    helper,
+    book_to_comics_func as btc_func,
+    creator_item as c_item,
+)
+
+from dotenv import load_dotenv
+import os
 import time
-from Book_To_Comics_Client.func import helper, book_to_comics_func as btc_func
+
+load_dotenv()
+
+SERVER_IP: str = os.getenv("SERVER_IP")
+SERVER_PORT: str = os.getenv("SERVER_PORT")
+SERVER_URL: str = f"{SERVER_IP}:{SERVER_PORT}"
 
 
 class State(rx.State):
@@ -19,6 +32,9 @@ class State(rx.State):
     """
     chat room start
     """
+    #### basic data ####
+
+    ##### chat #####
     question: str
     chat_history: list[tuple[str, str]]
 
@@ -41,9 +57,9 @@ class State(rx.State):
         async with httpx.AsyncClient() as client:
             # response = await client.get("http://localhost:8000/ping")
             response = await client.post(
-                "http://140.113.238.35:5000/generate_service",
+                f"http://{SERVER_URL}/generate_service",
                 json=format_request,
-                timeout=10,
+                timeout=30,
             )
 
         res = response.json()
@@ -91,23 +107,91 @@ class State(rx.State):
                 # self.posts.append(response.text)
                 self.res = response.text
 
-    @rx.background
-    async def get_request(self, url):
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url)
-            async with self:
-                self.res = f"code : {response.status_code} , {response.text}"
+    ############################
+    ## creator information ##
+    creator_info: list[dict[str, str]]
+    CREATOR: list[str] = ["KeithLin724", "Vincent-Lien"]
 
-    # @rx.background
-    async def test_get_request(self):
+    @rx.background
+    async def load_creator_info(self):
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:8000/ping")
-        self.res = response.text
-        # async with self:
-        #     self.res = result.text
+            tasks = [
+                client.get(c_item.User.GITHUB_API(user_name=creator_name))
+                for creator_name in self.CREATOR
+            ]
+
+            response = await asyncio.gather(*tasks)
+
+        response = [item.json() for item in response]
+
+        async with self:
+            self.creator_info = response
+
+        yield rx.console_log(self.creator_info)
+
+        return
 
     ############################
+    ## Text to Image
+    text_to_image_prompt: str
+    text_to_image_processing: bool = False
+    text_to_image_complete: bool = False
+    text_to_image_result: pil_Image = ""
 
+    @rx.background
+    async def get_text_to_image(self):
+        json_data = {
+            "type_service": "text_to_image",
+            "prompt": self.text_to_image_prompt,
+        }
+
+        async with self:
+            self.text_to_image_result = ""
+            self.text_to_image_processing, self.text_to_image_complete = True, False
+        yield
+
+        # TODO: send request
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"http://{SERVER_URL}/generate_service",
+                json=json_data,
+                timeout=10,
+            )
+
+        response = response.json()
+
+        json_data = {
+            "type_service": "text_to_image",
+            "unique_id": response["unique_id"],
+            "task_id": response["task_id"],
+            "file_path": "string",
+            "file_name": "string",
+            "time": "string",
+            "request_path": "string",
+        }
+
+        async with httpx.AsyncClient() as client:
+            while True:
+                response = await client.post(
+                    f"http://{SERVER_URL}/result_service",
+                    json=json_data,
+                )
+                content_type = response.headers.get("content-type")
+                if content_type == "image/jpeg":
+                    break
+
+                await asyncio.sleep(1)  # 休眠1秒后再次检查
+
+        image = Image.open(BytesIO(response.content))
+        async with self:
+            self.text_to_image_prompt = ""
+            self.text_to_image_result = image
+            self.text_to_image_processing, self.text_to_image_complete = False, True
+        yield
+
+        return
+
+    ############################
     text: str
     text_list: list[int] = []
 
@@ -139,6 +223,7 @@ class State(rx.State):
         """
         self.show_copy_in_top = not self.show_copy_in_top
         yield rx.set_clipboard(copy_message)
+        yield rx.console_log(SERVER_URL)
         # time.sleep(1)
         await asyncio.sleep(1)
         self.show_copy_in_top = not self.show_copy_in_top
@@ -166,7 +251,7 @@ class State(rx.State):
         response_arr = []
         async with httpx.AsyncClient() as client:
             for _ in self.img_src_arr:
-                response = await client.get("http://140.113.238.35:5000/test_get_image")
+                response = await client.get(f"http://{SERVER_URL}/test_get_image")
 
                 response_arr.append(
                     (
@@ -181,9 +266,9 @@ class State(rx.State):
         return
 
     async def get_test(self):
-        if self.text != "test":
-            return State.get_test_image
-        return State.get_test_image_2
+        if self.text == "test":
+            return State.run_test_3_prompt_to_list_image
+        return State.run_book_to_comics
 
     @rx.background
     async def get_test_image_2(self):
@@ -200,7 +285,7 @@ class State(rx.State):
         await asyncio.sleep(3)
 
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://140.113.238.35:5000/test_get_prompt")
+            response = await client.get(f"http://{SERVER_URL}/test_get_prompt")
 
         # yield rx.console_log(response.text)
         res = response.json()
@@ -228,7 +313,7 @@ class State(rx.State):
         # TODO: demo use prompt to get the image
         async with httpx.AsyncClient() as client:
             tasks = [
-                client.get("http://140.113.238.35:5000/test_get_image")
+                client.get(f"http://{SERVER_URL}/test_get_image")
                 for prompt in prompt_res_list
             ]
             # run in same time
@@ -263,9 +348,25 @@ class State(rx.State):
 
         # TODO: get cut prompt
         result_prompt = await btc_func.cut_prompt(self.text)
-        provider, prompt_res_list = result_prompt["provider"], result_prompt["message"]
+        provider, prompt_res_list = (
+            result_prompt["provider"],
+            result_prompt["prompt_list"],
+        )
+
+        if provider == "":
+            yield rx.console_log(prompt_res_list)
+
+            async with self:
+                self.is_cutting_prompt = False
+                self.img_src_arr = []
+
+                # self.text = ""
+
+                yield
+            return
 
         yield rx.console_log(f"cut prompt provider is {provider}")
+        yield rx.console_log(f"{prompt_res_list}")
 
         # TODO: update the member
         async with self:
@@ -280,7 +381,7 @@ class State(rx.State):
                 for i, prompt in enumerate(prompt_res_list)
             ]
 
-            self.text = ""
+            # self.text = ""
 
         yield
 
@@ -290,63 +391,114 @@ class State(rx.State):
 
         # TODO: each array location wait the image is process success
         # 创建任务列表，每个任务对应一个图像处理任务
-        tasks = [
-            State.poll_for_image_result(index, task_id_dict)
-            for index, task_id_dict in enumerate(result_task_list)
-        ]
 
-        # 并发运行所有任务
-        await asyncio.gather(*tasks)
+        for index, task_id_dict in enumerate(result_task_list):
+            yield State.poll_for_image_result(
+                index,
+                task_id_dict["unique_id"],
+                task_id_dict["task_id"],
+            )
+
         yield
 
         return
 
+    def image_refresh(self):
+        yield rx.window_alert("You clicked the image!")
+        self.counter += 1
+
+    ### Testing about use prompt to list of image ###
     @rx.background
-    async def poll_for_image_result(self, index: int, task_id_dict: dict) -> None:
-        RESULT_SERVICE_FORMAT = {
-            "type_service": "string",
-            "unique_id": "string",
+    async def run_test_3_prompt_to_list_image(self):
+        yield rx.console_log("run test 3")
+
+        async with self:
+            self.text = ""
+            self.is_cutting_prompt = True
+            self.img_src_arr = []
+        yield
+
+        # TODO: demo get the prompt
+        # demo delay
+        await asyncio.sleep(3)
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"http://{SERVER_URL}/test_get_prompt")
+
+        # yield rx.console_log(response.text)
+        res = response.json()
+        prompt_res_list = res["prompt"]
+
+        async with self:
+            self.is_cutting_prompt = False
+        yield
+
+        # TODO: update the member
+        async with self:
+            self.img_src_arr = [
+                (
+                    i,
+                    "",
+                    "",
+                    prompt,
+                )
+                for i, prompt in enumerate(prompt_res_list)
+            ]
+            self.text = ""
+        yield
+
+        # response_arr = []
+        result_task_list = await btc_func.prompt_to_image(prompt_res_list)
+        result_task_list = result_task_list["result"]
+
+        # 并发运行所有任务
+        start_time = time.time()
+        for index, task_id_dict in enumerate(result_task_list):
+            yield State.poll_for_image_result(
+                index,
+                task_id_dict["unique_id"],
+                task_id_dict["task_id"],
+            )
+
+        end_time = time.time() - start_time
+        yield rx.console_log(f"Total span time:{end_time}")
+
+    @rx.background
+    async def poll_for_image_result(
+        self, index: int, unique_id: str, task_id: str
+    ) -> None:
+        json_data = {
+            "type_service": "text_to_image",
+            "unique_id": unique_id,
+            "task_id": task_id,
             "file_path": "string",
             "file_name": "string",
             "time": "string",
             "request_path": "string",
         }
 
-        json_data = task_id_dict | RESULT_SERVICE_FORMAT
-
-        while True:
-            # result = await check_image_status(task_id, index)
-
-            async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient() as client:
+            while True:
                 response = await client.post(
-                    "http://140.113.238.35:5000/result_service",
+                    f"http://{SERVER_URL}/result_service",
                     json=json_data,
                 )
+                content_type = response.headers.get("content-type")
+                if content_type == "image/jpeg":
+                    break
 
-            result = response.json()
-            # TODO: use the state code to check is it success
-            # TODO: check the content type
-            if result["state"] == "finished":
-                result_item = result["result"]
-                pass
+                await asyncio.sleep(1)  # 休眠1秒后再次检查
 
-                yield rx.console_log(f"get image number:{index}")
-                break
-
-            await asyncio.sleep(1)  # 休眠1秒后再次检查
+        image_content = response.content
 
         async with self:
             prompt = self.img_src_arr[index][-1]
             self.img_src_arr[index] = (
                 index,
-                Image.open(BytesIO(result_item.content)),
-                helper.image_to_url(result_item.content),
+                Image.open(BytesIO(image_content)),
+                helper.image_to_url(image_content),
                 prompt,
             )
         yield
-
-    def image_refresh(self):
-        yield rx.window_alert("You clicked the image!")
-        self.counter += 1
 
     pass

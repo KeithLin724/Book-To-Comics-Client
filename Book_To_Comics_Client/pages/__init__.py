@@ -6,3 +6,4 @@ from .index import index
 from .book_to_comic import book_to_comic
 from .chat_ai_room import chat_ai_room
 from .reference import reference
+from .text_to_image import text_to_image

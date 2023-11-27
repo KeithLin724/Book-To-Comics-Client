@@ -1,3 +1,5 @@
+version: '3.8'
+
 # Comments are provided throughout this file to help you get started.
 # If you need more help, visit the Docker compose reference guide at
 # https://docs.docker.com/compose/compose-file/
@@ -12,11 +14,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # args:
-      # API_URL: https://${DOMAIN:-localhost}
+    environment:
+      API_URL: https://140.113.238.35:8000
     ports:
       - 3000:3000
       - 8000:8000
+    container_name: reflex_app
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

@@ -266,9 +266,9 @@ class State(rx.State):
         return
 
     async def get_test(self):
-        if self.text != "test":
-            return State.get_test_image
-        return State.get_test_image_2
+        if self.text == "test":
+            return State.run_test_3_prompt_to_list_image
+        return State.run_book_to_comics
 
     @rx.background
     async def get_test_image_2(self):
@@ -391,21 +391,13 @@ class State(rx.State):
 
         # TODO: each array location wait the image is process success
         # 创建任务列表，每个任务对应一个图像处理任务
-        tasks = [
-            poll_for_image_result(
+
+        for index, task_id_dict in enumerate(result_task_list):
+            yield State.poll_for_image_result(
                 index,
                 task_id_dict["unique_id"],
                 task_id_dict["task_id"],
-                State.img_src_arr,
             )
-            for index, task_id_dict in enumerate(result_task_list)
-        ]
-
-        # 并发运行所有任务
-        start_time = time.time()
-        await asyncio.gather(*tasks)
-        end_time = time.time() - start_time
-        yield rx.console_log(f"Total span time:{end_time}")
 
         yield
 
@@ -415,40 +407,98 @@ class State(rx.State):
         yield rx.window_alert("You clicked the image!")
         self.counter += 1
 
-    pass
+    ### Testing about use prompt to list of image ###
+    @rx.background
+    async def run_test_3_prompt_to_list_image(self):
+        yield rx.console_log("run test 3")
 
+        async with self:
+            self.text = ""
+            self.is_cutting_prompt = True
+            self.img_src_arr = []
+        yield
 
-async def poll_for_image_result(
-    index: int, unique_id: str, task_id: str, img_src_arr
-) -> None:
-    json_data = {
-        "type_service": "text_to_image",
-        "unique_id": unique_id,
-        "task_id": task_id,
-        "file_path": "string",
-        "file_name": "string",
-        "time": "string",
-        "request_path": "string",
-    }
+        # TODO: demo get the prompt
+        # demo delay
+        await asyncio.sleep(3)
 
-    async with httpx.AsyncClient() as client:
-        while True:
-            response = await client.post(
-                f"http://{SERVER_URL}/result_service",
-                json=json_data,
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"http://{SERVER_URL}/test_get_prompt")
+
+        # yield rx.console_log(response.text)
+        res = response.json()
+        prompt_res_list = res["prompt"]
+
+        async with self:
+            self.is_cutting_prompt = False
+        yield
+
+        # TODO: update the member
+        async with self:
+            self.img_src_arr = [
+                (
+                    i,
+                    "",
+                    "",
+                    prompt,
+                )
+                for i, prompt in enumerate(prompt_res_list)
+            ]
+            self.text = ""
+        yield
+
+        # response_arr = []
+        result_task_list = await btc_func.prompt_to_image(prompt_res_list)
+        result_task_list = result_task_list["result"]
+
+        # 并发运行所有任务
+        start_time = time.time()
+        for index, task_id_dict in enumerate(result_task_list):
+            yield State.poll_for_image_result(
+                index,
+                task_id_dict["unique_id"],
+                task_id_dict["task_id"],
             )
-            content_type = response.headers.get("content-type")
-            if content_type == "image/jpeg":
-                break
 
-            await asyncio.sleep(1)  # 休眠1秒后再次检查
+        end_time = time.time() - start_time
+        yield rx.console_log(f"Total span time:{end_time}")
 
-    image_content = response.content
+    @rx.background
+    async def poll_for_image_result(
+        self, index: int, unique_id: str, task_id: str
+    ) -> None:
+        json_data = {
+            "type_service": "text_to_image",
+            "unique_id": unique_id,
+            "task_id": task_id,
+            "file_path": "string",
+            "file_name": "string",
+            "time": "string",
+            "request_path": "string",
+        }
 
-    prompt = img_src_arr[index][-1]
-    img_src_arr[index] = (
-        index,
-        Image.open(BytesIO(image_content)),
-        helper.image_to_url(image_content),
-        prompt,
-    )
+        async with httpx.AsyncClient() as client:
+            while True:
+                response = await client.post(
+                    f"http://{SERVER_URL}/result_service",
+                    json=json_data,
+                )
+                content_type = response.headers.get("content-type")
+                if content_type == "image/jpeg":
+                    break
+
+                await asyncio.sleep(1)  # 休眠1秒后再次检查
+
+        image_content = response.content
+
+        async with self:
+            prompt = self.img_src_arr[index][-1]
+            self.img_src_arr[index] = (
+                index,
+                Image.open(BytesIO(image_content)),
+                helper.image_to_url(image_content),
+                prompt,
+            )
+        yield
+
+    pass

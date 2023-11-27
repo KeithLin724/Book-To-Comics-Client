@@ -2,6 +2,7 @@ import ast
 import httpx
 import asyncio
 import Book_To_Comics_Client.state as state_data
+import re
 
 
 async def cut_prompt(message_in: str):
@@ -48,17 +49,31 @@ Please use the information in the provided message {message} to craft the prompt
 
     # TODO: send request to server
     async with httpx.AsyncClient() as client:
-        response = await client.post(
-            f"http://{state_data.SERVER_URL}/generate_service",
-            json=json_data,
-            timeout=10,
-        )
+        resend = True
+        while resend:
+            try:
+                response = await client.post(
+                    f"http://{state_data.SERVER_URL}/generate_service",
+                    json=json_data,
+                    timeout=10,
+                )
+                resend = False
+                break
+            except httpx.ReadTimeout as e:
+                resend = True
 
     # TODO: get the result
     result = response.json()
 
     provider, message = result["provider"], result["message"]
 
+    if prompt_list := re.findall(r"\d+\.\s(.+)", message):
+        return {
+            "provider": provider,
+            "prompt_list": prompt_list,
+        }
+
+    # else
     open_message = message.find("[")
 
     if open_message == -1:
@@ -77,7 +92,13 @@ Please use the information in the provided message {message} to craft the prompt
 
     message = message[open_message : close_message + 1]
 
-    message = message.replace("\n", "")
+    message = message.replace("\n", "").replace("'s", "\\'s").strip()
+
+    with open("docs/log.log", mode="a") as f:
+        f.write(f"Original message: {message}")
+        f.write(f"Substring to be evaluated: {message[open_message:close_message + 1]}")
+
+    # yield rx.console_log(message)
 
     prompt_list = ast.literal_eval(message)
 

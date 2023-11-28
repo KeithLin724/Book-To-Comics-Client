@@ -386,6 +386,8 @@ class State(rx.State):
             # self.text = ""
 
         yield
+        # add style
+        prompt_res_list = [f"Anime: {prompt_item}" for prompt_item in prompt_res_list]
 
         # TODO: send cut prompt get the tasks id
         result_task_list = await btc_func.prompt_to_image(prompt_res_list)
@@ -447,8 +449,12 @@ class State(rx.State):
                 for i, prompt in enumerate(prompt_res_list)
             ]
             self.text = ""
+            # prompt_res_list = list(map(lambda item: f"Anime: {item}", prompt_res_list))
         yield
 
+        # prompt_res_list = [f"Anime: {prompt_item}" for prompt_item in prompt_res_list]
+
+        yield rx.console_log(prompt_res_list)
         # response_arr = []
         result_task_list = await btc_func.prompt_to_image(prompt_res_list)
         result_task_list = result_task_list["result"]

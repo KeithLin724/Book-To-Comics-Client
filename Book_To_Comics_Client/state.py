@@ -36,7 +36,7 @@ class State(rx.State):
 
     ##### chat #####
     question: str
-    chat_history: list[tuple[str, str]]
+    chat_history: list[tuple[int, str, str]]
 
     ai_is_thinking: bool = False
 
@@ -52,6 +52,11 @@ class State(rx.State):
             "prompt": self.question,
         }
         self.ai_is_thinking = True
+        # TODO: add the question in the history
+        index = len(self.chat_history)
+        self.chat_history.append((index, self.question, ""))
+        # Clear the question input.
+        self.question = ""
         yield
 
         async with httpx.AsyncClient() as client:
@@ -65,12 +70,8 @@ class State(rx.State):
         res = response.json()
 
         answer = res.get("message")
-        self.chat_history.append((self.question, ""))
 
-        # Clear the question input.
-        self.question = ""
         self.ai_is_thinking = False
-        # Yield here to clear the frontend input before continuing.
         yield
 
         for i in range(len(answer)):
@@ -78,7 +79,8 @@ class State(rx.State):
             await asyncio.sleep(0.05)
             # Add one letter at a time to the output.
             self.chat_history[-1] = (
-                self.chat_history[-1][0],
+                index,
+                self.chat_history[-1][1],
                 answer[: i + 1],
             )
             yield

@@ -9,17 +9,27 @@ version: '3.8'
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
+# During build and run, set environment DOMAIN pointing
+# to publicly accessible domain where app will be hosted
 services:
-  server:
+  app:
+    image: local/reflex-app
     build:
       context: .
-      dockerfile: Dockerfile
+      args:
+        API_URL: http://140.113.238.35:8000
+
+  webserver:
     environment:
-      API_URL: http://140.113.238.35:8000
+      DOMAIN: 140.113.238.35
     ports:
-      - 3000:3000
-      - 8000:8000
-    container_name: reflex_app
+      - 443:443
+      - 80:80  # for acme-challenge via HTTP
+    build:
+      context: .
+      dockerfile: Caddy.Dockerfile
+    depends_on:
+      - app
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

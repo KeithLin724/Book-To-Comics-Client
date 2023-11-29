@@ -6,13 +6,14 @@ def input_box() -> rx.Component:
     return rx.vstack(
         rx.input(
             placeholder="Enter a prompt",
-            on_blur=State.set_text_to_image_prompt,
+            on_change=State.set_text_to_image_prompt,
         ),
         rx.button(
             "Generate Image",
             on_click=State.get_text_to_image,
             is_loading=State.text_to_image_processing,
             width="100%",
+            is_disabled=State.text_to_image_prompt == "",
         ),
         rx.cond(
             State.text_to_image_complete,

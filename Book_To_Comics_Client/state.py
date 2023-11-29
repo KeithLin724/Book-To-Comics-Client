@@ -227,7 +227,7 @@ class State(rx.State):
 
         image = Image.open(BytesIO(response.content))
         async with self:
-            self.text_to_image_prompt = ""
+            # self.text_to_image_prompt = ""
             self.text_to_image_result = image
             self.text_to_image_processing, self.text_to_image_complete = False, True
         yield

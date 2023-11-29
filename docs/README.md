@@ -80,3 +80,18 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 import g4f
 ``` -->
 
+## Appendix
+### ChatGPT
+
+### Stable diffusion
+Stable diffusion is a text-to-image model.
+
+Before stable diffusion, there are already several models such as Generative Adversarial Networks (GANs), AutoRegressive Models (ARM), Variation AutoEncoder (VAEs), which can be used to generate images. However, these models have high computational cost.
+
+Recently, diffusion probabilistic models which are built from a hierarchy of denoising autoencoders were able to generate impressive high-quality images.
+
+The picture below is how stable diffusion works. First, it needs an autoencoder, which contains a encoder and decoder. The encoder will compress the image to latent space. And we will use the low-dimensional data to execute the diffusion process. Lastly, the decoder will decompress the image to high-dimensional space. It's called "Perceptual Compression".
+
+![image](/stable_diffusion.png)
+
+Resource: https://github.com/CompVis/latent-diffusion

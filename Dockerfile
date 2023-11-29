@@ -6,6 +6,8 @@ ARG API_URL
 
 # Copy local context to `/app` inside container (see .dockerignore)
 WORKDIR /app
+# EXPOSE 3000
+
 COPY . .
 
 # Create virtualenv which will be copied into final container
@@ -37,3 +39,4 @@ USER reflex
 ENV PATH="/app/.venv/bin:$PATH" API_URL=$API_URL
 
 CMD reflex db migrate && reflex run --env prod --backend-only
+# CMD  reflex run --env prod --backend-only

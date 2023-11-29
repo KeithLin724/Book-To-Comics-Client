@@ -32,11 +32,52 @@ class State(rx.State):
     """
     chat room start
     """
+
+    #### check the service ####
+    connect_server: bool  # check the sever state
+
+    async def check_server_state(self):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(f"http://{SERVER_URL}")
+
+            if response.status_code == 200:
+                self.connect_server = True
+
+        except httpx.ConnectError as e:
+            yield rx.console_log(f"connect server error{e}")
+            self.connect_server = False
+
+        return
+
+    service_provide: dict
+
+    def check_service(self, service):
+        return service in self.service_provide
+
+    async def get_server_service(self):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(f"http://{SERVER_URL}/connect")
+
+            if response.status_code == 200:
+                self.connect_server = True
+
+                self.service_provide = response.json()
+
+        except httpx.ConnectError as e:
+            yield rx.console_log(f"connect server error{e}")
+            self.connect_server = False
+
+        return
+
+    ##########################
+
     #### basic data ####
 
     ##### chat #####
     question: str
-    chat_history: list[tuple[str, str]]
+    chat_history: list[tuple[int, str, str]]
 
     ai_is_thinking: bool = False
 
@@ -52,6 +93,11 @@ class State(rx.State):
             "prompt": self.question,
         }
         self.ai_is_thinking = True
+        # TODO: add the question in the history
+        index = len(self.chat_history)
+        self.chat_history.append((index, self.question, ""))
+        # Clear the question input.
+        self.question = ""
         yield
 
         async with httpx.AsyncClient() as client:
@@ -65,12 +111,8 @@ class State(rx.State):
         res = response.json()
 
         answer = res.get("message")
-        self.chat_history.append((self.question, ""))
 
-        # Clear the question input.
-        self.question = ""
         self.ai_is_thinking = False
-        # Yield here to clear the frontend input before continuing.
         yield
 
         for i in range(len(answer)):
@@ -78,7 +120,8 @@ class State(rx.State):
             await asyncio.sleep(0.05)
             # Add one letter at a time to the output.
             self.chat_history[-1] = (
-                self.chat_history[-1][0],
+                index,
+                self.chat_history[-1][1],
                 answer[: i + 1],
             )
             yield
@@ -184,7 +227,7 @@ class State(rx.State):
 
         image = Image.open(BytesIO(response.content))
         async with self:
-            self.text_to_image_prompt = ""
+            # self.text_to_image_prompt = ""
             self.text_to_image_result = image
             self.text_to_image_processing, self.text_to_image_complete = False, True
         yield
@@ -384,6 +427,8 @@ class State(rx.State):
             # self.text = ""
 
         yield
+        # add style
+        prompt_res_list = [f"Anime: {prompt_item}" for prompt_item in prompt_res_list]
 
         # TODO: send cut prompt get the tasks id
         result_task_list = await btc_func.prompt_to_image(prompt_res_list)
@@ -445,8 +490,12 @@ class State(rx.State):
                 for i, prompt in enumerate(prompt_res_list)
             ]
             self.text = ""
+            # prompt_res_list = list(map(lambda item: f"Anime: {item}", prompt_res_list))
         yield
 
+        # prompt_res_list = [f"Anime: {prompt_item}" for prompt_item in prompt_res_list]
+
+        yield rx.console_log(prompt_res_list)
         # response_arr = []
         result_task_list = await btc_func.prompt_to_image(prompt_res_list)
         result_task_list = result_task_list["result"]

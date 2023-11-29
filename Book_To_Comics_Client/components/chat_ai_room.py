@@ -6,10 +6,11 @@ from Book_To_Comics_Client.styles import (
     question_style,
     answer_style,
     markdown_style,
+    ai_is_thinking,
 )
 
 
-def qa_markdown(question: str, answer: str) -> rx.Component:
+def qa_markdown(index: int, question: str, answer: str) -> rx.Component:
     return rx.box(
         rx.box(
             rx.box(
@@ -22,16 +23,30 @@ def qa_markdown(question: str, answer: str) -> rx.Component:
             text_align="right",
         ),
         rx.box(
-            rx.tooltip(
-                rx.box(
-                    rx.markdown(
-                        answer,
-                        component_map=markdown_style,
+            rx.cond(
+                condition=State.chat_history[index][-1] == "",
+                c1=rx.stack(
+                    rx.skeleton_text(
+                        no_of_lines=5,
+                        start_color="pink.500",
+                        end_color="orange.500",
+                        speed=1.5,
                     ),
-                    style=answer_style,
+                    style=ai_is_thinking,
+                    # style=answer_style,
                 ),
-                label="copy",
-                has_arrow=True,
+                c2=rx.tooltip(
+                    rx.box(
+                        # add animation
+                        rx.markdown(
+                            answer,
+                            component_map=markdown_style,
+                        ),
+                        style=answer_style,
+                    ),
+                    label="copy",
+                    has_arrow=True,
+                ),
             ),
             text_align="left",
             on_click=lambda: State.copy_show(answer),
@@ -44,7 +59,7 @@ def chat() -> rx.Component:
     return rx.box(
         rx.foreach(
             State.chat_history,
-            lambda messages: qa_markdown(messages[0], messages[1]),
+            lambda messages: qa_markdown(messages[0], messages[1], messages[2]),
         )
     )
 
@@ -74,22 +89,22 @@ def action_bar() -> rx.Component:
     )
 
 
-def copy_message_board() -> rx.Component:
-    # zoom image component
+# def copy_message_board() -> rx.Component:
+#     # zoom image component
 
-    return rx.drawer(
-        rx.drawer_content(
-            # rx.text("Copied!"),
-            # rx.drawer_header("Copied!"),
-            rx.center(
-                rx.drawer_header(
-                    "Copied!",
-                    color="white",
-                ),
-            ),
-            bg="rgba(0, 0, 0, 0.3)",
-        ),
-        is_open=State.show_copy_in_top,
-        # placement prop to position drawer at top
-        placement="top",
-    )
+#     return rx.drawer(
+#         rx.drawer_content(
+#             # rx.text("Copied!"),
+#             # rx.drawer_header("Copied!"),
+#             rx.center(
+#                 rx.drawer_header(
+#                     "Copied!",
+#                     color="white",
+#                 ),
+#             ),
+#             bg="rgba(0, 0, 0, 0.3)",
+#         ),
+#         is_open=State.show_copy_in_top,
+#         # placement prop to position drawer at top
+#         placement="top",
+#     )

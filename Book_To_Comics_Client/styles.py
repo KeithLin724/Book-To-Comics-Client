@@ -79,6 +79,15 @@ message_style = dict(
 # Set specific styles for questions and answers.
 question_style = message_style | dict(bg="#F5EFFE", margin_left=chat_margin)
 answer_style = message_style | dict(bg="#DEEAFD", margin_right=chat_margin)
+# ai is thinking animation
+ai_is_thinking = dict(
+    width="50%",
+    padding="2em",
+    shadow="lg",
+    border_radius="lg",
+    bg="#DEEAFD",
+)
+
 
 # Styles for the action bar.
 input_style = dict(

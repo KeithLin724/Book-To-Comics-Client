@@ -32,6 +32,47 @@ class State(rx.State):
     """
     chat room start
     """
+
+    #### check the service ####
+    connect_server: bool  # check the sever state
+
+    async def check_server_state(self):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(f"http://{SERVER_URL}")
+
+            if response.status_code == 200:
+                self.connect_server = True
+
+        except httpx.ConnectError as e:
+            yield rx.console_log(f"connect server error{e}")
+            self.connect_server = False
+
+        return
+
+    service_provide: dict
+
+    def check_service(self, service):
+        return service in self.service_provide
+
+    async def get_server_service(self):
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(f"http://{SERVER_URL}/connect")
+
+            if response.status_code == 200:
+                self.connect_server = True
+
+                self.service_provide = response.json()
+
+        except httpx.ConnectError as e:
+            yield rx.console_log(f"connect server error{e}")
+            self.connect_server = False
+
+        return
+
+    ##########################
+
     #### basic data ####
 
     ##### chat #####

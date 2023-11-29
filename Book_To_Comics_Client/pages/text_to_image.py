@@ -21,5 +21,5 @@ def text_to_image() -> rx.Component:
         func.error_board("text_to_image"),
         rx.heading("Text to Image"),
         tti.input_box(),
-        tti.zoom_message_board(),
+        func.zoom_message_board(),
     )

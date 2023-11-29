@@ -33,17 +33,17 @@ def input_box() -> rx.Component:
     )
 
 
-def zoom_message_board() -> rx.Component:
-    # drawer component : display a message in the top , "Copied!"
-    return rx.alert_dialog(
-        rx.alert_dialog_overlay(
-            rx.alert_dialog_content(
-                rx.image(
-                    src=State.zoom_image,
-                    on_click=lambda: State.toggle_zoom(""),
-                ),
-            ),
-        ),
-        is_open=State.is_zoomed,
-        on_overlay_click=lambda: State.toggle_zoom(""),
-    )
+# def zoom_message_board() -> rx.Component:
+#     # drawer component : display a message in the top , "Copied!"
+#     return rx.alert_dialog(
+#         rx.alert_dialog_overlay(
+#             rx.alert_dialog_content(
+#                 rx.image(
+#                     src=State.zoom_image,
+#                     on_click=lambda: State.toggle_zoom(""),
+#                 ),
+#             ),
+#         ),
+#         is_open=State.is_zoomed,
+#         on_overlay_click=lambda: State.toggle_zoom(""),
+#     )

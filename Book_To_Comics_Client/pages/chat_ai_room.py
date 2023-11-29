@@ -36,5 +36,5 @@ def chat_ai_room() -> rx.Component:
         ),
         chat_ai.chat(),
         chat_ai.action_bar(),
-        chat_ai.copy_message_board(),
+        func.copy_message_board(),
     )

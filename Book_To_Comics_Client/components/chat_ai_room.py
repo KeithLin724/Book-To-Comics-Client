@@ -89,22 +89,22 @@ def action_bar() -> rx.Component:
     )
 
 
-def copy_message_board() -> rx.Component:
-    # zoom image component
+# def copy_message_board() -> rx.Component:
+#     # zoom image component
 
-    return rx.drawer(
-        rx.drawer_content(
-            # rx.text("Copied!"),
-            # rx.drawer_header("Copied!"),
-            rx.center(
-                rx.drawer_header(
-                    "Copied!",
-                    color="white",
-                ),
-            ),
-            bg="rgba(0, 0, 0, 0.3)",
-        ),
-        is_open=State.show_copy_in_top,
-        # placement prop to position drawer at top
-        placement="top",
-    )
+#     return rx.drawer(
+#         rx.drawer_content(
+#             # rx.text("Copied!"),
+#             # rx.drawer_header("Copied!"),
+#             rx.center(
+#                 rx.drawer_header(
+#                     "Copied!",
+#                     color="white",
+#                 ),
+#             ),
+#             bg="rgba(0, 0, 0, 0.3)",
+#         ),
+#         is_open=State.show_copy_in_top,
+#         # placement prop to position drawer at top
+#         placement="top",
+#     )

@@ -50,7 +50,8 @@ def menu_button() -> rx.Component:
                     rx.link("About", href="https://github.com/reflex-dev", width="100%")
                 ),
                 rx.menu_item(
-                    rx.link("Contact", href="mailto:founders@=reflex.dev", width="100%")
+                    # rx.link("Contact", href="mailto:founders@=reflex.dev", width="100%")
+                    rx.link("Contact", href="mailto:keithlin.ee09@nycu.edu.tw, vincentlien.en09@nycu.edu.tw", width="100%")
                 ),
             ),
         ),

@@ -82,16 +82,35 @@ import g4f
 
 ## Appendix
 ### ChatGPT
+- #### What is ChatGPT
+  ChatGPT is a tool that will attempt to understand the hints you provide and, based on its training results, generate sentences that best match the possible answer.
+
+  You can use it to answer questions, write copies, draft mails, explain code, and so on. In summary, it is a powerful tool that can greatly enhance our life.
+
+- #### How does ChatGPT work?
+  The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
+
+  - #### Pre-trained
+    GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
+    
+  - #### Transformer
+    The main idea behind the Transformer is a process called 'self-attention'. Older networks, such as RNNs, read sentences from left to right. However, the Transformer reads all words in the sentence at once, allowing it to focus its attention on the most relevant word.
+    
+    Below is an image of the Transformer's model architecture.
+
+    ![image](/Transformer.png)
+
+    For more information about transformer, please visit: https://arxiv.org/abs/1706.03762 
 
 ### Stable diffusion
-Stable diffusion is a text-to-image model.
+- #### What is Stable diffusion?
+    Stable diffusion is a text-to-image model. Before stable diffusion, there are already several models such as Generative Adversarial Networks (GANs), AutoRegressive Models (ARM), Variation AutoEncoder (VAEs), which can be used to generate images. However, these models have high computational cost.
 
-Before stable diffusion, there are already several models such as Generative Adversarial Networks (GANs), AutoRegressive Models (ARM), Variation AutoEncoder (VAEs), which can be used to generate images. However, these models have high computational cost.
+- #### How does stable diffusion work?
+    Recently, diffusion probabilistic models built from a hierarchy of denoising autoencoders have been able to generate impressive high-quality images.
 
-Recently, diffusion probabilistic models which are built from a hierarchy of denoising autoencoders were able to generate impressive high-quality images.
+    The picture below shows how stable diffusion works. First, an autoencoder is needed, which contains an encoder and decoder. The encoder compresses the image into a latent space, and the low-dimensional data is used to execute the diffusion process. Finally, the decoder decompresses the image back to the high-dimensional space. This process is called 'Perceptual Compression'.
 
-The picture below is how stable diffusion works. First, it needs an autoencoder, which contains a encoder and decoder. The encoder will compress the image to latent space. And we will use the low-dimensional data to execute the diffusion process. Lastly, the decoder will decompress the image to high-dimensional space. It's called "Perceptual Compression".
+    ![image](/stable_diffusion.png)
 
-![image](/stable_diffusion.png)
-
-Resource: https://github.com/CompVis/latent-diffusion
+    Resource: https://github.com/CompVis/latent-diffusion

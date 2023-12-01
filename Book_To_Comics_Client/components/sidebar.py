@@ -18,7 +18,6 @@ def sidebar_header() -> rx.Component:
         rx.link(
             rx.tooltip(
                 rx.image(
-                    # src="/icon.svg",
                     src="/NYCU_VISION_LAB_LOGO.svg",
                     height="2em",
                 ),
@@ -44,7 +43,7 @@ def sidebar_header() -> rx.Component:
                     "bg": styles.accent_color,
                 },
             ),
-            href="https://github.com/reflex-dev/reflex",
+            href="https://github.com/KeithLin724/Book-To-Comics-Client",
         ),
         width="100%",
         border_bottom=styles.border,
@@ -64,12 +63,13 @@ def sidebar_footer() -> rx.Component:
         rx.spacer(),
         rx.link(
             rx.text("Docs"),
-            href="https://reflex.dev/docs/getting-started/introduction/",
+            # href="https://reflex.dev/docs/getting-started/introduction/",
+            href="https://github.com/KeithLin724/Book-To-Comics-Client/blob/main/README.md",
         ),
-        rx.link(
-            rx.text("Blog"),
-            href="https://reflex.dev/blog/",
-        ),
+        # rx.link(
+        #     rx.text("Blog"),
+        #     href="https://reflex.dev/blog/",
+        # ),
         width="100%",
         border_top=styles.border,
         padding="1em",

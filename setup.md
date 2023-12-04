@@ -15,7 +15,7 @@ The path is `./Book_to_Comics_Client/.env`
 SERVER_IP={YOUR_BOOK_TO_COMIC_API_SERVER_IP}
 SERVER_PORT={YOUR_BOOK_TO_COMIC_API_SERVER_PORT}
 ```
-
+> Set up Book To Comic server in here -> https://github.com/KeithLin724/Book-To-Comics
 
 ### Run the app
 ```sh

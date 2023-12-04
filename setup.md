@@ -37,6 +37,11 @@ reflex run --env prod
 # or run in debug mode
 reflex run --loglevel debug
 ``` 
+The app run in `http://localhost:3000`
+
+
+---
+
 ## More information
 ### Reflex
 - Website: https://reflex.dev/

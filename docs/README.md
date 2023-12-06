@@ -35,8 +35,11 @@
         The message below is how we ask text generator to cut the story into prompts.
         ```python
         message: f"""
-        can you cut list of prompt in the message to describe the image how to look like,
-        return like ['...' , '...' , ...], message is {message}
+        Given an image, I need your help to generate a clear list of prompts describing how the image looks.
+        The prompts should be in list format. 
+        Please use the information in the provided message {message} to craft the prompts.
+        Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. 
+        Thank you!
         """
         ```
     - #### Image Generation

@@ -2,7 +2,10 @@
 ## Written By 練鈞揚, 連文聖
 
 ---
+## Setup
+> Please look here [Setup.md](./setup.md)
 
+---
 ## Information about the project 
 - ### Why we created this tool? 
   - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. 
@@ -34,7 +37,12 @@
         
         The message below is how we ask text generator to cut the story into prompts.
         ```python
-        message: f"can you cut list of prompt in the message to describe the image how to look like, return like ['...' , '...' , ...], message is {message}"
+        message: f"Given an image, I need your help to generate a clear list of prompts describing how the image looks.
+        The prompts should be in list format. 
+        Please use the information in the provided message {message} to craft the prompts.
+        Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. 
+        Thank you!"
+        
         ```
     - #### Image Generation
         While the image generator get the prompts from story cutter, the image generator will generate corresponding image for each prompt.

@@ -17,6 +17,8 @@
     
     This setup allows users to utilize the tools more conveniently, eliminating the need to open multiple screens.
 
+---
+
 ## About the Project Technique
 ### 1. Book-To-Comics
 - #### Flow 
@@ -80,7 +82,35 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 import g4f
 ``` -->
 
+---
+
+## Server Technque
+- #### Project App Architecture
+  The picture below illustrates the architecture of our project app. For the client part, we use Reflex to build the pages. For the server part, we utilize FastAPI.
+  
+  ![image](/book_to_comics-app.drawio.png)
+
+- #### Handle Process Image Traffic Problem
+  When the client requests the server to process a long-time task, the server will enqueue the job in Redis, returning a task ID. After the Redis queue completes the job, it will store the results in the Redis database, awaiting the client to retrieve the results.
+
+  ![image](/book_to_comics-Task%20Queue.drawio.png)
+
+- #### Client Fetch Data
+  After the Redis queue receives the job, the client will use the task ID to query the job status or result if the job is completed. If the job is completed, it will be stored in the database. When the task ID is in Redis, it will return the result to the client.
+
+  ![image](/book_to_comics-fetch%20data.drawio.png)
+
+- #### Micro Service
+  Normally, if a server wants to add new services, it will shut down, add the code for the new services, and then turn on the server. This process can cause interruptions in the server service.
+  
+  To mitigate these issues, integrate services from the main server, extract them, and divide them into independent services that solely provide services to the main server. This approach, known as microservices, enables us to easily add or remove services without disrupting the overall system.
+
+  ![image](/book_to_comics-micro%20service%20connect.drawio.png)
+
+---
+
 ## Appendix
+
 ### ChatGPT
 - #### What is ChatGPT
   ChatGPT is a tool that will attempt to understand the hints you provide and, based on its training results, generate sentences that best match the possible answer.

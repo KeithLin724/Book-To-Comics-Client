@@ -17,6 +17,8 @@
     
     This setup allows users to utilize the tools more conveniently, eliminating the need to open multiple screens.
 
+---
+
 ## About the Project Technique
 ### 1. Book-To-Comics
 - #### Flow 
@@ -77,3 +79,64 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 import g4f
 ``` -->
 
+---
+
+## Server Technque
+- #### Project App Architecture
+  The picture below illustrates the architecture of our project app. For the client part, we use Reflex to build the pages. For the server part, we utilize FastAPI.
+  
+  ![image](/assets/book_to_comics-app.drawio.png)
+
+- #### Handle Process Image Traffic Problem
+  When the client requests the server to process a long-time task, the server will enqueue the job in Redis, returning a task ID. After the Redis queue completes the job, it will store the results in the Redis database, awaiting the client to retrieve the results.
+
+  ![image](/assets/book_to_comics-Task%20Queue.drawio.png)
+
+- #### Client Fetch Data
+  After the Redis queue receives the job, the client will use the task ID to query the job status or result if the job is completed. If the job is completed, it will be stored in the database. When the task ID is in Redis, it will return the result to the client.
+
+  ![image](/assets/book_to_comics-fetch%20data.drawio.png)
+
+- #### Micro Service
+  Normally, if a server wants to add new services, it will shut down, add the code for the new services, and then turn on the server. This process can cause interruptions in the server service.
+  
+  To mitigate these issues, integrate services from the main server, extract them, and divide them into independent services that solely provide services to the main server. This approach, known as microservices, enables us to easily add or remove services without disrupting the overall system.
+
+  ![image](/assets/book_to_comics-micro%20service%20connect.drawio.png)
+
+---
+
+## Appendix
+### ChatGPT
+- #### What is ChatGPT
+  ChatGPT is a tool that will attempt to understand the hints you provide and, based on its training results, generate sentences that best match the possible answer.
+
+  You can use it to answer questions, write copies, draft mails, explain code, and so on. In summary, it is a powerful tool that can greatly enhance our life.
+
+- #### How does ChatGPT work?
+  The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
+
+  - #### Pre-trained
+    GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
+    
+  - #### Transformer
+    The main idea behind the Transformer is a process called 'self-attention'. Older networks, such as RNNs, read sentences from left to right. However, the Transformer reads all words in the sentence at once, allowing it to focus its attention on the most relevant word.
+    
+    Below is an image of the Transformer's model architecture.
+
+    ![image](/assets/Transformer.png)
+
+    For more information about transformer, please visit: https://arxiv.org/abs/1706.03762 
+
+### Stable diffusion
+- #### What is Stable diffusion?
+    Stable diffusion is a text-to-image model. Before stable diffusion, there are already several models such as Generative Adversarial Networks (GANs), AutoRegressive Models (ARM), Variation AutoEncoder (VAEs), which can be used to generate images. However, these models have high computational cost.
+
+- #### How does stable diffusion work?
+    Recently, diffusion probabilistic models built from a hierarchy of denoising autoencoders have been able to generate impressive high-quality images.
+
+    The picture below shows how stable diffusion works. First, an autoencoder is needed, which contains an encoder and decoder. The encoder compresses the image into a latent space, and the low-dimensional data is used to execute the diffusion process. Finally, the decoder decompresses the image back to the high-dimensional space. This process is called 'Perceptual Compression'.
+
+    ![image](/assets/stable_diffusion.png)
+
+    Resource: https://github.com/CompVis/latent-diffusion

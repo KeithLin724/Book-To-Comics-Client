@@ -123,6 +123,8 @@ import g4f
 - #### How does ChatGPT work?
   The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
 
+  ![image](/GPT3_flow_chart.jpeg)
+
   - #### Pre-trained
     GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
     

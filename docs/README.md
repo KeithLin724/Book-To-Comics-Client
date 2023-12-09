@@ -26,7 +26,7 @@
     
     The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
-        ![image](/book%20to%20comic%20flow.png)
+        ![image](/book_to_comics-Flow-chart.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
@@ -63,14 +63,13 @@ import g4f
 
     Without using asynchronously method to send request:
     
-    ![image](/long%20reaction%20time%20origin.png)
+    ![image](/book_to_comics-chat.png)
 
     We found using the async method can speed up the response.
 
     Using asynchronously method to send request:
     
-    ![image](/long%20reaction%20time%20improve.png)
-
+    ![image](/book_to_comics-chat-speed%20up%20(2).png)
 ## Example Story
 <!-- ## Example Story
 ```

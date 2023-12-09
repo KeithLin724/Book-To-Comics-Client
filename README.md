@@ -37,12 +37,13 @@
         
         The message below is how we ask text generator to cut the story into prompts.
         ```python
-        message: f"Given an image, I need your help to generate a clear list of prompts describing how the image looks.
+        message: f"""
+        Given an image, I need your help to generate a clear list of prompts describing how the image looks.
         The prompts should be in list format. 
         Please use the information in the provided message {message} to craft the prompts.
         Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. 
-        Thank you!"
-        
+        Thank you!
+        """
         ```
     - #### Image Generation
         While the image generator get the prompts from story cutter, the image generator will generate corresponding image for each prompt.

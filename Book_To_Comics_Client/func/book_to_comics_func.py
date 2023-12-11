@@ -37,7 +37,7 @@ async def message_to_list_prompt(message: str):
 
     message = message[open_message : close_message + 1]
 
-    message = message.replace("\n", "").replace("'s", "\\'s").strip()
+    message = message.replace("\n", "").replace("'", "\\'").strip()
 
     prompt_list = ast.literal_eval(message)
 
@@ -90,7 +90,7 @@ async def cut_prompt(message_in: str):
 
     json_data = {
         "type_service": "chat",
-        "prompt": CUT_PROMPT_FUNC_2(message=message_in),
+        "prompt": CUT_PROMPT_FUNC_1(message=message_in),
     }
 
     # TODO: send request to server

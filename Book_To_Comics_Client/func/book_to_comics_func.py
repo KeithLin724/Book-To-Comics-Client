@@ -113,40 +113,44 @@ async def cut_prompt(message_in: str):
 
     provider, message = result["provider"], result["message"]
 
-    if prompt_list := re.findall(r"\d+\.\s(.+)", message):
-        return {
-            "provider": provider,
-            "prompt_list": prompt_list,
-        }
+    prompt_list = await message_to_list_prompt(message=message)
 
-    # else
-    open_message = message.find("[")
+    if prompt_list is None:
+        prompt_list = f"{provider}:{message}"
+    # if prompt_list := re.findall(r"\d+\.\s(.+)", message):
+    #     return {
+    #         "provider": provider,
+    #         "prompt_list": prompt_list,
+    #     }
 
-    if open_message == -1:
-        return {
-            "provider": "",
-            "prompt_list": f"{provider}:{message}",
-        }
+    # # else
+    # open_message = message.find("[")
 
-    close_message = message.find("]")
+    # if open_message == -1:
+    #     return {
+    #         "provider": "",
+    #         "prompt_list": f"{provider}:{message}",
+    #     }
 
-    if close_message == -1:
-        return {
-            "provider": "",
-            "prompt_list": f"{provider}:{message}",
-        }
+    # close_message = message.find("]")
 
-    message = message[open_message : close_message + 1]
+    # if close_message == -1:
+    #     return {
+    #         "provider": "",
+    #         "prompt_list": f"{provider}:{message}",
+    #     }
 
-    message = message.replace("\n", "").replace("'s", "\\'s").strip()
+    # message = message[open_message : close_message + 1]
 
-    with open("docs/log.log", mode="a") as f:
-        f.write(f"Original message: {message}")
-        f.write(f"Substring to be evaluated: {message[open_message:close_message + 1]}")
+    # message = message.replace("\n", "").replace("'s", "\\'s").strip()
 
-    # yield rx.console_log(message)
+    # with open("docs/log.log", mode="a") as f:
+    #     f.write(f"Original message: {message}")
+    #     f.write(f"Substring to be evaluated: {message[open_message:close_message + 1]}")
 
-    prompt_list = ast.literal_eval(message)
+    # # yield rx.console_log(message)
+
+    # prompt_list = ast.literal_eval(message)
 
     return {
         "provider": provider,

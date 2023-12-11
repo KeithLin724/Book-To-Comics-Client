@@ -83,10 +83,7 @@ One day her mother said to her, "Come, Little Red Riding Hood, here is a piece o
 ```
 Story reference: https://americanliterature.com/childrens-stories/little-red-riding-hood
 
-<!-- 
-```python 
-import g4f
-``` -->
+> More Story example: https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d
 
 ---
 

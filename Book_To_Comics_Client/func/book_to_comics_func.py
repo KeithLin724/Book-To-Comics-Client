@@ -35,10 +35,17 @@ async def cut_prompt(message_in: str):
     # Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
     #         """
     #     )
+    #     CUT_PROMPT_FUNC = (
+    #         lambda message: f"""
+    # Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format.
+    # Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
+    #         """
+    #     )
     CUT_PROMPT_FUNC = (
         lambda message: f"""
-Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format. 
-Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
+Generate a list of prompts describing the appearance of an image based on the provided message. 
+The prompts should be imaginative and comprehensive. Use the information in the message {message} to craft the prompts. 
+Please present your responses in the format ['...', '...', ...]. Thank you!
         """
     )
 

@@ -77,7 +77,10 @@ Once upon a time there was a dear little girl who was loved by every one who loo
 
 One day her mother said to her, "Come, Little Red Riding Hood, here is a piece of cake and a bottle of wine. Take them to your grandmother, she is ill and weak, and they will do her good. Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing. And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it."
 ``` -->
+Story example: https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d
+
 Story reference: https://americanliterature.com/childrens-stories/little-red-riding-hood
+
 
 <!-- 
 ```python 

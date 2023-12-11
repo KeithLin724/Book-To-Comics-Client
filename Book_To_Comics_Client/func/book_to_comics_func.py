@@ -4,6 +4,45 @@ import asyncio
 import Book_To_Comics_Client.state as state_data
 import re
 
+CUT_PROMPT_FUNC_1 = (
+    lambda message: f"""
+Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format.
+Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
+            """
+)
+
+CUT_PROMPT_FUNC_2 = (
+    lambda message: f"""
+Generate a list of prompts describing the appearance of an image based on the provided message. 
+The prompts should be imaginative and comprehensive. Use the information in the message {message} to craft the prompts. 
+Please present your responses in the format ['...', '...', ...]. Thank you!
+        """
+)
+
+
+async def message_to_list_prompt(message: str):
+    if prompt_list := re.findall(r"\d+\.\s(.+)", message):
+        return prompt_list
+
+    # else
+    open_message = message.find("[")
+
+    if open_message == -1:
+        return None
+
+    close_message = message.find("]")
+
+    if close_message == -1:
+        return None
+
+    message = message[open_message : close_message + 1]
+
+    message = message.replace("\n", "").replace("'", "\\'").replace("\\", "").strip()
+
+    prompt_list = ast.literal_eval(message)
+
+    return prompt_list
+
 
 async def cut_prompt(message_in: str):
     """
@@ -35,16 +74,10 @@ async def cut_prompt(message_in: str):
     # Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
     #         """
     #     )
-    CUT_PROMPT_FUNC = (
-        lambda message: f"""
-Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format. 
-Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
-        """
-    )
 
     json_data = {
-        "type_service": "chat",
-        "prompt": CUT_PROMPT_FUNC(message=message_in),
+        "type_service": "cut_prompt",
+        "prompt": CUT_PROMPT_FUNC_1(message=message_in),
     }
 
     # TODO: send request to server
@@ -55,7 +88,7 @@ Please use the information in the provided message {message} to craft the prompt
                 response = await client.post(
                     f"http://{state_data.SERVER_URL}/generate_service",
                     json=json_data,
-                    timeout=10,
+                    timeout=30,
                 )
                 resend = False
                 break
@@ -65,46 +98,38 @@ Please use the information in the provided message {message} to craft the prompt
     # TODO: get the result
     result = response.json()
 
-    provider, message = result["provider"], result["message"]
+    result_list = [
+        item_dict
+        | {"prompt_list": await message_to_list_prompt(message=item_dict["response"])}
+        for item_dict in result
+        if item_dict["state"] == "OK"
+    ]
 
-    if prompt_list := re.findall(r"\d+\.\s(.+)", message):
-        return {
-            "provider": provider,
-            "prompt_list": prompt_list,
-        }
+    error_message = []
 
-    # else
-    open_message = message.find("[")
+    for item in result_list:
+        # TODO: find the process success
+        if item["prompt_list"] is not None:
+            return {
+                "provider": item["provider"],
+                "prompt_list": item["prompt_list"],
+            }
 
-    if open_message == -1:
-        return {
-            "provider": "",
-            "prompt_list": f"{provider}:{message}",
-        }
+        error_message.append(f"{item['provider']}:{item['response']}")
 
-    close_message = message.find("]")
+    # TODO: choose one of theme
+    # provider, message = result["provider"], result["response"]
 
-    if close_message == -1:
-        return {
-            "provider": "",
-            "prompt_list": f"{provider}:{message}",
-        }
+    # prompt_list = await message_to_list_prompt(message=message)
 
-    message = message[open_message : close_message + 1]
-
-    message = message.replace("\n", "").replace("'s", "\\'s").strip()
-
-    with open("docs/log.log", mode="a") as f:
-        f.write(f"Original message: {message}")
-        f.write(f"Substring to be evaluated: {message[open_message:close_message + 1]}")
-
-    # yield rx.console_log(message)
-
-    prompt_list = ast.literal_eval(message)
+    # if prompt_list is None:
+    #     prompt_list = f"{provider}:{message}"
 
     return {
-        "provider": provider,
-        "prompt_list": prompt_list,
+        "provider": "",
+        "prompt_list": "",
+        "error": True,
+        "error_message": "\n".join(error_message),
     }
 
 

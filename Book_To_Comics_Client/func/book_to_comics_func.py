@@ -4,6 +4,45 @@ import asyncio
 import Book_To_Comics_Client.state as state_data
 import re
 
+CUT_PROMPT_FUNC_1 = (
+    lambda message: f"""
+Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format.
+Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
+            """
+)
+
+CUT_PROMPT_FUNC_2 = (
+    lambda message: f"""
+Generate a list of prompts describing the appearance of an image based on the provided message. 
+The prompts should be imaginative and comprehensive. Use the information in the message {message} to craft the prompts. 
+Please present your responses in the format ['...', '...', ...]. Thank you!
+        """
+)
+
+
+async def message_to_list_prompt(message: str):
+    if prompt_list := re.findall(r"\d+\.\s(.+)", message):
+        return prompt_list
+
+    # else
+    open_message = message.find("[")
+
+    if open_message == -1:
+        return None
+
+    close_message = message.find("]")
+
+    if close_message == -1:
+        return None
+
+    message = message[open_message : close_message + 1]
+
+    message = message.replace("\n", "").replace("'s", "\\'s").strip()
+
+    prompt_list = ast.literal_eval(message)
+
+    return prompt_list
+
 
 async def cut_prompt(message_in: str):
     """
@@ -35,23 +74,23 @@ async def cut_prompt(message_in: str):
     # Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
     #         """
     #     )
-    #     CUT_PROMPT_FUNC = (
-    #         lambda message: f"""
-    # Given an image, I need your help to generate a clear list of prompts describing how the image looks. The prompts should be in list format.
-    # Please use the information in the provided message {message} to craft the prompts. Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. Thank you!
-    #         """
-    #     )
-    CUT_PROMPT_FUNC = (
-        lambda message: f"""
-Generate a list of prompts describing the appearance of an image based on the provided message. 
-The prompts should be imaginative and comprehensive. Use the information in the message {message} to craft the prompts. 
-Please present your responses in the format ['...', '...', ...]. Thank you!
-        """
-    )
+
+    # CUT_PROMPT_FUNC_LIST = [CUT_PROMPT_FUNC_1, CUT_PROMPT_FUNC_2]
+
+    # json_data_list = [
+    #     {
+    #         "type_service": "chat",
+    #         "prompt": CUT_PROMPT_FUNC(message=message_in),
+    #     }
+    #     for CUT_PROMPT_FUNC in CUT_PROMPT_FUNC_LIST
+    # ]
+    # task2 = asyncio.Task()
+    # task2.exception()
+    # task2.result()
 
     json_data = {
         "type_service": "chat",
-        "prompt": CUT_PROMPT_FUNC(message=message_in),
+        "prompt": CUT_PROMPT_FUNC_2(message=message_in),
     }
 
     # TODO: send request to server

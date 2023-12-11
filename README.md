@@ -126,6 +126,8 @@ import g4f
 
   ![image](/assets/GPT3_flow_chart.jpeg)
 
+  Resource: https://arxiv.org/abs/2203.02155
+
   - #### Pre-trained
     GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
     

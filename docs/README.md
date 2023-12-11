@@ -26,7 +26,7 @@
     
     The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
-        ![image](/book%20to%20comic%20flow.png)
+        ![image](/book_to_comics-Flow-chart.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
@@ -35,8 +35,11 @@
         The message below is how we ask text generator to cut the story into prompts.
         ```python
         message: f"""
-        can you cut list of prompt in the message to describe the image how to look like,
-        return like ['...' , '...' , ...], message is {message}
+        Given an image, I need your help to generate a clear list of prompts describing how the image looks.
+        The prompts should be in list format. 
+        Please use the information in the provided message {message} to craft the prompts.
+        Return your responses in the format ['...', '...', ...]. Be as detailed and imaginative as possible. 
+        Thank you!
         """
         ```
     - #### Image Generation
@@ -60,14 +63,13 @@ import g4f
 
     Without using asynchronously method to send request:
     
-    ![image](/long%20reaction%20time%20origin.png)
+    ![image](/book_to_comics-chat.png)
 
     We found using the async method can speed up the response.
 
     Using asynchronously method to send request:
     
-    ![image](/long%20reaction%20time%20improve.png)
-
+    ![image](/book_to_comics-chat-speed%20up%20(2).png)
 ## Example Story
 <!-- ## Example Story
 ```
@@ -88,24 +90,24 @@ import g4f
 - #### Project App Architecture
   The picture below illustrates the architecture of our project app. For the client part, we use Reflex to build the pages. For the server part, we utilize FastAPI.
   
-  ![image](/book_to_comics-app.drawio.png)
+  ![image](/book_to_comics-app.png)
 
 - #### Handle Process Image Traffic Problem
   When the client requests the server to process a long-time task, the server will enqueue the job in Redis, returning a task ID. After the Redis queue completes the job, it will store the results in the Redis database, awaiting the client to retrieve the results.
 
-  ![image](/book_to_comics-Task%20Queue.drawio.png)
+  ![image](/book_to_comics-Task%20Queue.png)
 
 - #### Client Fetch Data
   After the Redis queue receives the job, the client will use the task ID to query the job status or result if the job is completed. If the job is completed, it will be stored in the database. When the task ID is in Redis, it will return the result to the client.
 
-  ![image](/book_to_comics-fetch%20data.drawio.png)
+  ![image](/book_to_comics-fetch%20data.png)
 
 - #### Micro Service
   Normally, if a server wants to add new services, it will shut down, add the code for the new services, and then turn on the server. This process can cause interruptions in the server service.
   
   To mitigate these issues, integrate services from the main server, extract them, and divide them into independent services that solely provide services to the main server. This approach, known as microservices, enables us to easily add or remove services without disrupting the overall system.
 
-  ![image](/book_to_comics-micro%20service%20connect.drawio.png)
+  ![image](/book_to_comics-micro%20service%20connect.png)
 
 ---
 
@@ -119,6 +121,10 @@ import g4f
 
 - #### How does ChatGPT work?
   The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
+
+  ![image](/GPT3_flow_chart.jpeg)
+
+  Resource: https://arxiv.org/abs/2203.02155
 
   - #### Pre-trained
     GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.

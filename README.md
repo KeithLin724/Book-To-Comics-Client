@@ -146,3 +146,17 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
     ![image](/assets/stable_diffusion.png)
 
     Resource: https://github.com/CompVis/latent-diffusion
+
+--- 
+## Tools 
+
+[ <img src="https://www.python.org/static/community_logos/python-powered-w.svg" alt="Python"  height="50"> ](https://www.python.org/)
+[ <img src="https://logosmarcas.net/wp-content/uploads/2021/03/Docker-Logo.png" alt="Docker"  height="50"> ](https://www.docker.com/)
+[ <img src="https://www.logo.wine/a/logo/Redis/Redis-Logo.wine.svg" alt="Redis"  height="50"> ](https://redis.io/)
+[ <img src="https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png" alt="FastAPI"  height="50"> ](https://fastapi.tiangolo.com/)
+[ <img src="https://th.bing.com/th/id/OIP.UP5P6iEpL1u0VfOXC52rTwHaCv?rs=1&pid=ImgDetMain" alt="Hugging Face"  height="50"> ](https://huggingface.co/)
+[ <img src="https://raw.githubusercontent.com/reflex-dev/reflex/main/docs/images/reflex_light.svg#gh-dark-mode-only" alt="Reflex"  height="50"> ](https://reflex.dev/)
+[ <img src="https://git-scm.com/images/logos/downloads/Git-Logo-2Color.svg" alt="Git"  height="50"> ](https://git-scm.com/)
+[ <img src="https://private-user-images.githubusercontent.com/98614666/258785911-ea012c87-76e0-496a-8ac4-e2de090cc6c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDIyODk4MzAsIm5iZiI6MTcwMjI4OTUzMCwicGF0aCI6Ii85ODYxNDY2Ni8yNTg3ODU5MTEtZWEwMTJjODctNzZlMC00OTZhLThhYzQtZTJkZTA5MGNjNmM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjExVDEwMTIxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM1OTRlYjI4NzIyYWJkODQ1YTczNWM3ZDE2N2RmYzJlNzBiODI5YjczMDA0YzU1NGY0ODY3ZDE4NWZmZmZjOTUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.zZOJ_otXm2464cyCYx8Pv5lWnN-kQ_kEb61ELtAa6LY" alt="g4f"  height="50"> ](https://github.com/xtekky/gpt4free)
+
+

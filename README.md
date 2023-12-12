@@ -29,7 +29,7 @@
     
     The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
-        ![image](/assets/book_to_comics-Flow-chart.png)
+        ![image](/assets/project/book_to_comics-Flow-chat.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
@@ -66,13 +66,13 @@ import g4f
 
     Without using asynchronously method to send request:
     
-    ![image](/assets/book_to_comics-chat.png)
+    ![image](/assets/project/book_to_comics-chat.png)
 
     We found using the async method can speed up the response.
 
     Using asynchronously method to send request:
     
-    ![image](/assets/book_to_comics-chat-speed%20up%20(2).png)
+    ![image](/assets/project/book_to_comics-chat-speed%20up.png)
 
 
 ## Example Story
@@ -91,24 +91,24 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 - #### Project App Architecture
   The picture below illustrates the architecture of our project app. For the client part, we use Reflex to build the pages. For the server part, we utilize FastAPI.
   
-  ![image](/assets/book_to_comics-app.png)
+  ![image](/assets/project/book_to_comics-app.png)
 
 - #### Handle Process Image Traffic Problem
   When the client requests the server to process a long-time task, the server will enqueue the job in Redis, returning a task ID. After the Redis queue completes the job, it will store the results in the Redis database, awaiting the client to retrieve the results.
 
-  ![image](/assets/book_to_comics-Task%20Queue.png)
+  ![image](/assets/project/book_to_comics-Task%20Queue.png)
 
 - #### Client Fetch Data
   After the Redis queue receives the job, the client will use the task ID to query the job status or result if the job is completed. If the job is completed, it will be stored in the database. When the task ID is in Redis, it will return the result to the client.
 
-  ![image](/assets/book_to_comics-fetch%20data.png)
+  ![image](/assets/project/book_to_comics-fetch%20data.png)
 
 - #### Micro Service
   Normally, if a server wants to add new services, it will shut down, add the code for the new services, and then turn on the server. This process can cause interruptions in the server service.
   
   To mitigate these issues, integrate services from the main server, extract them, and divide them into independent services that solely provide services to the main server. This approach, known as microservices, enables us to easily add or remove services without disrupting the overall system.
 
-  ![image](/assets/book_to_comics-micro%20service%20connect.png)
+  ![image](/assets/project/book_to_comics-micro%20service%20connect.png)
 
 ---
 

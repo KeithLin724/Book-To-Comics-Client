@@ -55,11 +55,12 @@ In the Chat with AI, you can communicate with the AI just like using ChatGPT.
 
 In our project, we use a tool called 'g4f' to perform tasks similar to ChatGPT's functions, but without the need to host an LLM on our server.
 
-The command to call `g4f` is showned below:
+The command to call `g4f` is show in below:
 ```python
 import g4f
 ```
 > **Warning:** `g4f` is only allowed for research or educational purposes and must not be used for commercial purposes.
+> [More detail](https://github.com/xtekky/gpt4free)
 
 - #### Long reaction time issue
     While using the `g4f` library, we have observed that the response is very slow, and it is also quite easy to trigger HTTP timeout issues.
@@ -124,7 +125,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 
   ![image](/assets/GPT3_flow_chart.jpeg)
 
-  Resource: https://arxiv.org/abs/2203.02155
+  > Resource: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)
 
   - #### Pre-trained
     GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
@@ -136,7 +137,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 
     ![image](/assets/Transformer.png)
 
-    For more information about transformer, please visit: https://arxiv.org/abs/1706.03762 
+    > For more information about transformer, please visit: [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
 ### Stable diffusion
 - #### What is Stable diffusion?
@@ -149,7 +150,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 
     ![image](/assets/stable_diffusion.png)
 
-    Resource: https://github.com/CompVis/latent-diffusion
+    > Resource: [Latent Diffusion Models (Github)](https://github.com/CompVis/latent-diffusion)
 
 --- 
 ## Tools 

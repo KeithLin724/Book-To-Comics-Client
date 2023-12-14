@@ -7,3 +7,4 @@ book_to_comics_client_venv
 .env
 .log
 .venv
+.vscode

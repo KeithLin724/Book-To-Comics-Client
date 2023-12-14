@@ -7,7 +7,7 @@
 - ### Why we created this tool? 
   - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. 
   
-    While searching our project topic, we discovered that many people have not used text-to-image tools before or unware of them. 
+    While searching our project topic, we discovered that many people have not used text-to-image tools before or unaware of them. 
     
     Therefore, we developed this tool to introduce people text-to-image techniques, expecting to make more individuals aware of the powerful tool.
 - ### What are the functions of this tool?
@@ -71,6 +71,8 @@ import g4f
     Using asynchronously method to send request:
     
     ![image](/project/book_to_comics-chat-speed%20up.png)
+
+---
 ## Example Story
 <!-- ## Example Story
 ```
@@ -78,9 +80,9 @@ Once upon a time there was a dear little girl who was loved by every one who loo
 
 One day her mother said to her, "Come, Little Red Riding Hood, here is a piece of cake and a bottle of wine. Take them to your grandmother, she is ill and weak, and they will do her good. Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing. And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it."
 ``` -->
-Story example: https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d
+Story example: [here](https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d)
 
-Story reference: https://americanliterature.com/childrens-stories/little-red-riding-hood
+Story reference: [here](https://americanliterature.com/childrens-stories/little-red-riding-hood)
 
 
 <!-- 

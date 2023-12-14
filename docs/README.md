@@ -47,6 +47,11 @@
     
     Finally, you can see your story turn into pictures and narrations, or more precisely, a picture/comic book.
 
+
+- #### Example Story
+  - Story example: [here](https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d)
+  - Story reference: [here](https://americanliterature.com/childrens-stories/little-red-riding-hood)
+
 ### 2. Chat with AI
 In the Chat with AI, you can communicate with the AI just like using ChatGPT. 
 
@@ -72,23 +77,6 @@ import g4f
     
     ![image](/project/book_to_comics-chat-speed%20up.png)
 
----
-## Example Story
-<!-- ## Example Story
-```
-Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child. Once she gave her a little cap of red velvet, which suited her so well that she would never wear anything else. So she was always called Little Red Riding Hood.
-
-One day her mother said to her, "Come, Little Red Riding Hood, here is a piece of cake and a bottle of wine. Take them to your grandmother, she is ill and weak, and they will do her good. Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing. And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it."
-``` -->
-Story example: [here](https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d)
-
-Story reference: [here](https://americanliterature.com/childrens-stories/little-red-riding-hood)
-
-
-<!-- 
-```python 
-import g4f
-``` -->
 
 ---
 

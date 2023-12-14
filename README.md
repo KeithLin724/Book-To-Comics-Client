@@ -10,7 +10,7 @@
 - ### Why we created this tool? 
   - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. 
   
-    While searching our project topic, we discovered that many people have not used text-to-image tools before or unware of them. 
+    While searching our project topic, we discovered that many people have not used text-to-image tools before or unaware of them. 
     
     Therefore, we developed this tool to introduce people text-to-image techniques, expecting to make more individuals aware of the powerful tool.
 - ### What are the functions of this tool?
@@ -29,7 +29,7 @@
     
     The picture shown below is a simple flow of how book-to-comics works.
     - #### Flow Chart
-        ![image](/assets/book_to_comics-Flow-chart.png)
+        ![image](/assets/project/book_to_comics-Flow-chat.png)
     - #### Input a Story
         Type a story into the textbox. If you have no idea, you can try the story we provided below or use Chat with AI to generate some stories. 
     - #### Prompt Setting 
@@ -55,24 +55,25 @@ In the Chat with AI, you can communicate with the AI just like using ChatGPT.
 
 In our project, we use a tool called 'g4f' to perform tasks similar to ChatGPT's functions, but without the need to host an LLM on our server.
 
-The command to call `g4f` is showned below:
+The command to call `g4f` is show in below:
 ```python
 import g4f
 ```
 > **Warning:** `g4f` is only allowed for research or educational purposes and must not be used for commercial purposes.
+> [More detail](https://github.com/xtekky/gpt4free)
 
 - #### Long reaction time issue
     While using the `g4f` library, we have observed that the response is very slow, and it is also quite easy to trigger HTTP timeout issues.
 
     Without using asynchronously method to send request:
     
-    ![image](/assets/book_to_comics-chat.png)
+    ![image](/assets/project/book_to_comics-chat.png)
 
     We found using the async method can speed up the response.
 
     Using asynchronously method to send request:
     
-    ![image](/assets/book_to_comics-chat-speed%20up%20(2).png)
+    ![image](/assets/project/book_to_comics-chat-speed%20up.png)
 
 
 ## Example Story
@@ -81,9 +82,9 @@ Once upon a time there was a dear little girl who was loved by every one who loo
 
 One day her mother said to her, "Come, Little Red Riding Hood, here is a piece of cake and a bottle of wine. Take them to your grandmother, she is ill and weak, and they will do her good. Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing. And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it."
 ```
-Story reference: https://americanliterature.com/childrens-stories/little-red-riding-hood
+Story reference: [here](https://americanliterature.com/childrens-stories/little-red-riding-hood)
 
-> More Story example: https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d
+> More Story example: [here](https://gist.github.com/KeithLin724/b5b2688ca626e92432e292929e47d05d)
 
 ---
 
@@ -91,24 +92,24 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 - #### Project App Architecture
   The picture below illustrates the architecture of our project app. For the client part, we use Reflex to build the pages. For the server part, we utilize FastAPI.
   
-  ![image](/assets/book_to_comics-app.png)
+  ![image](/assets/project/book_to_comics-app.png)
 
 - #### Handle Process Image Traffic Problem
   When the client requests the server to process a long-time task, the server will enqueue the job in Redis, returning a task ID. After the Redis queue completes the job, it will store the results in the Redis database, awaiting the client to retrieve the results.
 
-  ![image](/assets/book_to_comics-Task%20Queue.png)
+  ![image](/assets/project/book_to_comics-Task%20Queue.png)
 
 - #### Client Fetch Data
   After the Redis queue receives the job, the client will use the task ID to query the job status or result if the job is completed. If the job is completed, it will be stored in the database. When the task ID is in Redis, it will return the result to the client.
 
-  ![image](/assets/book_to_comics-fetch%20data.png)
+  ![image](/assets/project/book_to_comics-fetch%20data.png)
 
 - #### Micro Service
   Normally, if a server wants to add new services, it will shut down, add the code for the new services, and then turn on the server. This process can cause interruptions in the server service.
   
   To mitigate these issues, integrate services from the main server, extract them, and divide them into independent services that solely provide services to the main server. This approach, known as microservices, enables us to easily add or remove services without disrupting the overall system.
 
-  ![image](/assets/book_to_comics-micro%20service%20connect.png)
+  ![image](/assets/project/book_to_comics-micro%20service%20connect.png)
 
 ---
 
@@ -122,9 +123,9 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 - #### How does ChatGPT work?
   The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
 
-  ![image](/assets/GPT3_flow_chart.jpeg)
+  ![image](/assets/project/GPT3_flow_chart.jpeg)
 
-  Resource: https://arxiv.org/abs/2203.02155
+  > Resource: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)
 
   - #### Pre-trained
     GPT is given some basic rules and a huge amount of unmarked data, which may contain almost the entirety information of the internet. Then, it processes this data in an unsupervised state, developing its own rules and relationships between the texts.
@@ -134,9 +135,9 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
     
     Below is an image of the Transformer's model architecture.
 
-    ![image](/assets/Transformer.png)
+    ![image](/assets/project/Transformer.png)
 
-    For more information about transformer, please visit: https://arxiv.org/abs/1706.03762 
+    > For more information about transformer, please visit: [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
 ### Stable diffusion
 - #### What is Stable diffusion?
@@ -147,9 +148,9 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 
     The picture below shows how stable diffusion works. First, an autoencoder is needed, which contains an encoder and decoder. The encoder compresses the image into a latent space, and the low-dimensional data is used to execute the diffusion process. Finally, the decoder decompresses the image back to the high-dimensional space. This process is called 'Perceptual Compression'.
 
-    ![image](/assets/stable_diffusion.png)
+    ![image](/assets/project/stable_diffusion.png)
 
-    Resource: https://github.com/CompVis/latent-diffusion
+    > Resource: [Latent Diffusion Models (Github)](https://github.com/CompVis/latent-diffusion)
 
 --- 
 ## Tools 
@@ -161,6 +162,6 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 [ <img src="https://th.bing.com/th/id/OIP.UP5P6iEpL1u0VfOXC52rTwHaCv?rs=1&pid=ImgDetMain" alt="Hugging Face"  height="50"> ](https://huggingface.co/)
 [ <img src="https://raw.githubusercontent.com/reflex-dev/reflex/main/docs/images/reflex_light.svg#gh-dark-mode-only" alt="Reflex"  height="50"> ](https://reflex.dev/)
 [ <img src="https://git-scm.com/images/logos/downloads/Git-Logo-2Color.svg" alt="Git"  height="50"> ](https://git-scm.com/)
-[ <img src="https://private-user-images.githubusercontent.com/98614666/258785911-ea012c87-76e0-496a-8ac4-e2de090cc6c9.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDIyODk4MzAsIm5iZiI6MTcwMjI4OTUzMCwicGF0aCI6Ii85ODYxNDY2Ni8yNTg3ODU5MTEtZWEwMTJjODctNzZlMC00OTZhLThhYzQtZTJkZTA5MGNjNmM5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjExVDEwMTIxMFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM1OTRlYjI4NzIyYWJkODQ1YTczNWM3ZDE2N2RmYzJlNzBiODI5YjczMDA0YzU1NGY0ODY3ZDE4NWZmZmZjOTUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.zZOJ_otXm2464cyCYx8Pv5lWnN-kQ_kEb61ELtAa6LY" alt="g4f"  height="50"> ](https://github.com/xtekky/gpt4free)
+[ <img src="https://storage.ko-fi.com/cdn/useruploads/63f85360-cf6c-43e7-b9a7-6e97b5f09488_png_fdc7b0ca-92fb-4c2d-82e0-60798794bb38cover.png" alt="g4f"  height="50"> ](https://github.com/xtekky/gpt4free)
 
 

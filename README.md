@@ -123,7 +123,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 - #### How does ChatGPT work?
   The full name of GPT is Generative Pre-trained Transformer. From its name, we can easily learn that the key to GPT is the letter 'P', which stands for 'Pre-trained', and the letter 'T', which similarly stands for 'Transformer'.
 
-  ![image](/assets/GPT3_flow_chart.jpeg)
+  ![image](/assets/project/GPT3_flow_chart.jpeg)
 
   > Resource: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155)
 
@@ -135,7 +135,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
     
     Below is an image of the Transformer's model architecture.
 
-    ![image](/assets/Transformer.png)
+    ![image](/assets/project/Transformer.png)
 
     > For more information about transformer, please visit: [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
@@ -148,7 +148,7 @@ Story reference: https://americanliterature.com/childrens-stories/little-red-rid
 
     The picture below shows how stable diffusion works. First, an autoencoder is needed, which contains an encoder and decoder. The encoder compresses the image into a latent space, and the low-dimensional data is used to execute the diffusion process. Finally, the decoder decompresses the image back to the high-dimensional space. This process is called 'Perceptual Compression'.
 
-    ![image](/assets/stable_diffusion.png)
+    ![image](/assets/project/stable_diffusion.png)
 
     > Resource: [Latent Diffusion Models (Github)](https://github.com/CompVis/latent-diffusion)
 

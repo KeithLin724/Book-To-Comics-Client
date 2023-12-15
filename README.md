@@ -6,6 +6,10 @@
 > Please look here [Setup.md](./setup.md)
 
 ---
+## Demo Video
+[![Video](https://img.youtube.com/vi/c06yysTPTJQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=c06yysTPTJQ)
+
+---
 ## Information about the project 
 - ### Why we created this tool? 
   - Artificial intelligence (AI) techniques have progressed rapidly in recent years. As university students, AI tools are part of our life. 

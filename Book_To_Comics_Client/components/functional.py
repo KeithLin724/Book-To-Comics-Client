@@ -23,7 +23,7 @@ def error_board(service: str = "connect") -> rx.Component:
         )
         if service == "connect"
         else rx.cond(
-            condition=State.service_is_not_provider(service),
+            condition=State.service_provide[service] == {},
             c1=rx.alert(
                 rx.alert_icon(),
                 rx.alert_title("Server is not provide this service"),

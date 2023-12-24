@@ -52,7 +52,10 @@ class State(rx.State):
 
     service_provide: dict
 
-    def check_service(self, service):
+    def service_is_not_provider(self, service):
+        return service not in self.service_provide
+
+    def service_is_provider(self, service):
         return service in self.service_provide
 
     async def get_server_service(self):
@@ -64,6 +67,7 @@ class State(rx.State):
                 self.connect_server = True
 
                 self.service_provide = response.json()
+                # yield rx.console_log(self.service_provide["text_to_image"])
 
         except httpx.ConnectError as e:
             yield rx.console_log(f"connect server error{e}")
